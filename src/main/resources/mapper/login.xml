@@ -4,8 +4,9 @@
 
 <mapper namespace="Login">
 
-	<select id="getMember" resultType="com.mrp.company.dto.LoginDto">
+	<select id="getMember" parameterType="map" resultType="com.mrp.company.dto.LoginDto">
 		select * from mrp.member
+			where id=#{id} and pw = #{pw} and compNum = #{compNum}::INTEGER
 	</select>
 
 </mapper>

@@ -13,10 +13,7 @@ import org.springframework.stereotype.Component;
 public class AOPController {
 	Logger logger =  LoggerFactory.getLogger(AOPController.class);
 
-	    //@Around("execution(* com.example.demo.service.BookService.*(..))")
-	    //@Around("execution(* com.mrp.company.*.controller..*.*(..))")
-	    //@Around("execution(* com.mrp.company..*.*(..))")
-		@Around("execution(* com.mrp.company.*.controller..*.*(..))")
+		//@Around("execution(* com.mrp.company.")
 	    public Object logging(ProceedingJoinPoint pjp) throws Throwable {
 	        logger.info("start - " + pjp.getSignature().getDeclaringTypeName() + " / " + pjp.getSignature().getName());
 	        Object result = pjp.proceed();

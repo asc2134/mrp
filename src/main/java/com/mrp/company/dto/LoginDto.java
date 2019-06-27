@@ -1,20 +1,17 @@
 package com.mrp.company.dto;
 
 public class LoginDto {
-	private int memNo;
-	private String id;
-	private String pwd;
-	private String name;
-	private String number;
-	private String email;
-	private String gender;
-	private int compNo;
-	
-	public int getMemNo() {
-		return memNo;
+	int memNum;
+	String id;
+	String pw;
+	String address;
+	String phonNum;
+	int compNum;
+	public int getMemNum() {
+		return memNum;
 	}
-	public void setMemNo(int memNo) {
-		this.memNo = memNo;
+	public void setMemNum(int memNum) {
+		this.memNum = memNum;
 	}
 	public String getId() {
 		return id;
@@ -22,47 +19,35 @@ public class LoginDto {
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public String getName() {
-		return name;
+	public String getPw() {
+		return pw;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setPw(String pw) {
+		this.pw = pw;
 	}
-	public String getNumber() {
-		return number;
+	public String getAddress() {
+		return address;
 	}
-	public void setNumber(String number) {
-		this.number = number;
+	public void setAddress(String address) {
+		this.address = address;
 	}
-	public String getEmail() {
-		return email;
+	public String getPhonNum() {
+		return phonNum;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setPhonNum(String phonNum) {
+		this.phonNum = phonNum;
 	}
-	public String getGender() {
-		return gender;
+	public int getCompNum() {
+		return compNum;
 	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-	public int getCompNo() {
-		return compNo;
-	}
-	public void setCompNo(int compNo) {
-		this.compNo = compNo;
-	}
-	public String getPwd() {
-		return pwd;
-	}
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
+	public void setCompNum(int compNum) {
+		this.compNum = compNum;
 	}
 	@Override
 	public String toString() {
-		return "loginDto [memNo=" + memNo + ", id=" + id + ", pwd=" + pwd + ", name=" + name + ", number="
-				+ number + ", email=" + email + ", gender=" + gender + ", compNo=" + compNo + "]";
+		return "LoginDto [memNum=" + memNum + ", id=" + id + ", pw=" + pw + ", address=" + address + ", phonNum="
+				+ phonNum + ", compNum=" + compNum + "]";
 	}
+	
 	
 }

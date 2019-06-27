@@ -1,5 +1,7 @@
 package com.mrp.company.dao;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -13,8 +15,8 @@ public class LoginDao {
 	@Autowired
 	private SqlSessionTemplate sql;
 
-	public List<LoginDto> getList() {
-		return sql.selectList("Login.getMember");
+	public List<LoginDto> checkLogin(HashMap<String, Object> map) {
+		return sql.selectList("Login.getMember",map);
 	}
 	
 	

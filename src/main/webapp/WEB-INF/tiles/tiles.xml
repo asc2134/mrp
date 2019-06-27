@@ -12,7 +12,9 @@
   		<definition name ="login/*" extends="empty">
   			<put-attribute name="content" value="/WEB-INF/views/login/{1}.jsp"></put-attribute>
   		</definition>
-  		
+  		<definition name ="error/*" extends="empty">
+  			<put-attribute name="content" value="/WEB-INF/views/login/{1}.jsp"></put-attribute>
+  		</definition>
   		
         <definition name="default" template="/WEB-INF/views/common/default-layout.jsp">
                 <put-attribute name="ext" value="/WEB-INF/views/common/ext.jsp"></put-attribute>
