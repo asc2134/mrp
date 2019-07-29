@@ -1,24 +1,22 @@
 
 package com.mrp.company.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mrp.company.dao.LoginDao;
-import com.mrp.company.dto.LoginDto;
+import com.mrp.company.dto.MemberDto;
 
 
 @Controller
@@ -27,16 +25,34 @@ public class LoginController {
 	@Autowired
 	private LoginDao dao;
 	
+	
+    @RequestMapping("/openapi/readMember/{id}")
+    public @ResponseBody String  openApiReadUser(@PathVariable String id) {
+    	MemberDto dto = dao.readMember(id);
+    	return dto.getId();
+    }
+    
+    @RequestMapping("/openapi/readAuthority/{id}")
+    public @ResponseBody String  openApiReadAuthority(@PathVariable String id) {
+        List<String> auths = dao.readAuthority(id);
+        
+        StringBuffer buf = new StringBuffer();
+        for(String auth : auths) {
+            buf.append(auth);
+            buf.append(" ");
+        }
+        return buf.toString();
+    }
+    
+	
 	@RequestMapping("/")
 	private String login() throws Exception {
 		return "login/login";
 	}
-	
-	
+
 	@RequestMapping("/checkLogin.do")
-	@ResponseBody
-	private Boolean checkLogin(HttpSession session,  @RequestBody HashMap<String, Object> map) throws Exception {
-		List<LoginDto> list =dao.checkLogin(map);
+	private @ResponseBody Boolean checkLogin(HttpSession session,  @RequestBody HashMap<String, Object> map) throws Exception {
+		List<MemberDto> list =dao.checkLogin(map);
 		if(list.size()<2 && list.size()>0) {
 			session.setAttribute("id", list.get(0).getId());
 			session.setAttribute("compNum", list.get(0).getCompNum());

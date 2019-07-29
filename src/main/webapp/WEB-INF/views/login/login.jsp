@@ -5,15 +5,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<link rel="stylesheet" href="/static/css/zerogrid.css">
-	<link rel="stylesheet" href="/static/css/style.css">
-	<link rel="stylesheet" href="/static/css/menu.css">
-	<link rel="stylesheet" href="/static/css/responsiveslides.css">
-	<script src="/static/js/jquery-latest.min.js"></script>
-	<script src="/static/js/script.js"></script>
-    <script src="/static/js/jquery183.min.js"></script>
-    <script src="/static/js/responsiveslides.min.js"></script>
-    
+<script src="/js/jquery183.min.js"></script>
+
 <style type="text/css">
 .view-center{
 	position: absolute;
@@ -52,8 +45,6 @@ function login(){
 	    }
 	});
 }
-
-
 
 </script>
 
