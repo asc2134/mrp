@@ -1,4 +1,4 @@
-package com.mrp.company.common;
+/*package com.mrp.company.common;
 
 import java.io.IOException;
 
@@ -16,13 +16,13 @@ import com.mrp.company.dto.SecurityMemeberDto;
 
 @Component
 public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
-/* public AuthSuccessHandler(String defaultTargetUrl) {
+ public AuthSuccessHandler(String defaultTargetUrl) {
 	 setDefaultTargetUrl(defaultTargetUrl);
- }*/
+ }
  @Override
  public void onAuthenticationSuccess(HttpServletRequest r, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
      
-     /*((SecurityMemeberDto)authentication.getPrincipal()).setIp(getClientIp(req));
+     ((SecurityMemeberDto)authentication.getPrincipal()).setIp(getClientIp(req));
      
      HttpSession session = req.getSession();
      if (session != null) {
@@ -35,7 +35,7 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
          }
      } else {
          super.onAuthenticationSuccess(req, resp, authentication);
-     }*/
+     }
      response.setStatus(HttpServletResponse.SC_OK);
      // 성공 시 response를 json형태로 반환
      response.getWriter().print("{\"success\": true}");
@@ -66,3 +66,4 @@ public class AuthSuccessHandler extends SavedRequestAwareAuthenticationSuccessHa
  
 
 }
+*/

@@ -55,7 +55,6 @@ public class LoginController {
 		List<MemberDto> list =dao.checkLogin(map);
 		if(list.size()<2 && list.size()>0) {
 			session.setAttribute("id", list.get(0).getId());
-			session.setAttribute("compNum", list.get(0).getCompNum());
 			return true;
 		}else {
 			return false;

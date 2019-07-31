@@ -1,4 +1,4 @@
-package com.mrp.company.common;
+/*package com.mrp.company.common;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,3 +47,4 @@ public class AuthProvider implements AuthenticationProvider {
 	}
 
 }
+*/

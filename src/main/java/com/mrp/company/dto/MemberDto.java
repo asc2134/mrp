@@ -1,9 +1,5 @@
 package com.mrp.company.dto;
 
-import java.util.Collection;
-
-import org.springframework.security.core.GrantedAuthority;
-
 public class MemberDto {
 	int memNum;
 	String id;
@@ -13,14 +9,6 @@ public class MemberDto {
 	String name;
 	String isAdmin;
 	int compNum;
-	
-	
-	@Override
-	public String toString() {
-		return "MemberDto [memNum=" + memNum + ", id=" + id + ", pw=" + pw + ", address=" + address + ", phonNum="
-				+ phonNum + ", name=" + name + ", isAdmin=" + isAdmin + ", compNum=" + compNum + ", authorities="
-				+ authorities + "]";
-	}
 	public String getIsAdmin() {
 		return isAdmin;
 	}
@@ -33,8 +21,6 @@ public class MemberDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	private Collection<? extends GrantedAuthority> authorities;
-	
 	public int getMemNum() {
 		return memNum;
 	}
@@ -71,14 +57,5 @@ public class MemberDto {
 	public void setCompNum(int compNum) {
 		this.compNum = compNum;
 	}
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
-	}
-	public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-		this.authorities = authorities;
-	}
-
-
-	
 	
 }

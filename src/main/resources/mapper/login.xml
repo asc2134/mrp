@@ -6,7 +6,7 @@
 
 	<select id="getMember" parameterType="map" resultType="com.mrp.company.dto.MemberDto">
 		select * from mrp.member
-			where id=#{id} and pw = #{pw} and compNum = #{compNum}::INTEGER
+			where id=#{id} and pw = #{pw} <!-- and  compNum = #{compNum}::INTEGER -->
 	</select>
     <select id="readMember" parameterType="String" resultType="com.mrp.company.dto.MemberDto">
         SELECT * FROM mrp.member WHERE id = #{id}

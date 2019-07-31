@@ -5,8 +5,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<script src="/js/jquery183.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="  crossorigin="anonymous"></script>
 <style type="text/css">
 .view-center{
 	position: absolute;
@@ -17,6 +16,7 @@
     margin: -50px 0 0 -50px;
 }
 </style>
+
 <script type="text/javascript">
 
 
@@ -24,8 +24,6 @@ function login(){
 	var data = {};
 	data["id"] = $('#id').val();
 	data["pw"] = $('#pw').val();
-	data["compNum"] = $('#compNum').val();
-	
 	$.ajax({
 		type : "POST",
 		url : "/checkLogin.do",
@@ -54,12 +52,16 @@ function login(){
 <body>
 	<div class="view-center">
 		<h2>Ys MRP</h2>
+		  <!-- 
+		  	로그인에 회사코드 추가하는거 정책사항으로 삭제 
 		  <div class="form-group">
 		    <label for="inputComCode3" class="col-sm-2 control-label">회사코드</label>
 		    <div class="col-sm-10">
 		      <input type="comCode" name="compNum" class="form-control" id="compNum" placeholder="회사코드" value="1">
 		    </div>
-		  </div>
+		  </div> 
+		  
+		  -->
 		  <div class="form-group">
 		    <label for="inputId3" class="col-sm-2 control-label">아이디</label>
 		    <div class="col-sm-10">

@@ -1,4 +1,4 @@
-package com.mrp.company;
+/*package com.mrp.company;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -58,3 +58,4 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
  
 }
+*/

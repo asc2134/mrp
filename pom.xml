@@ -110,10 +110,12 @@
 	        <optional>true</optional>
     	</dependency>
         <!-- SECURITY -->
+        <!-- 시큐리티 걷어냄 (여러 오류가 너무많이발생)
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        --> 
         <!-- SECURITY -->
         <!-- DB Logback -->
         <dependency>

@@ -1,4 +1,4 @@
-package com.mrp.company.common;
+/*package com.mrp.company.common;
 
 import java.io.IOException;
 
@@ -16,11 +16,12 @@ public class AuthFailureHandler implements AuthenticationFailureHandler{
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 		
-		/*response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		// 실패 시 response를 json 형태로 결과값 전달
         response.getWriter().print("{\"success\": false}");
-        response.getWriter().flush();*/
+        response.getWriter().flush();
 		
 	}
 
 }
+*/

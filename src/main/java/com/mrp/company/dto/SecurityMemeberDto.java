@@ -1,4 +1,4 @@
-package com.mrp.company.dto;
+/*package com.mrp.company.dto;
 
 import org.springframework.security.core.userdetails.User;
 
@@ -14,3 +14,4 @@ public class SecurityMemeberDto extends User{
 		this.ip = ip;
 	}
 }
+*/
