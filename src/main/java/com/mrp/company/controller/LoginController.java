@@ -23,36 +23,20 @@ import com.mrp.company.dto.MemberDto;
 public class LoginController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	@Autowired
-	private LoginDao dao;
-	
-	
-    @RequestMapping("/openapi/readMember/{id}")
-    public @ResponseBody String  openApiReadUser(@PathVariable String id) {
-    	MemberDto dto = dao.readMember(id);
-    	return dto.getId();
-    }
-    
-    @RequestMapping("/openapi/readAuthority/{id}")
-    public @ResponseBody String  openApiReadAuthority(@PathVariable String id) {
-        List<String> auths = dao.readAuthority(id);
-        
-        StringBuffer buf = new StringBuffer();
-        for(String auth : auths) {
-            buf.append(auth);
-            buf.append(" ");
-        }
-        return buf.toString();
-    }
-    
+	private LoginDao loginDao;
 	
 	@RequestMapping("/")
-	private String login() throws Exception {
-		return "login/login";
+	private String login(HttpSession session) throws Exception {
+		if(session.getId() == null) {
+			return "login/login"; 
+		}else {
+			return "main/main";
+		}
 	}
 
 	@RequestMapping("/checkLogin.do")
 	private @ResponseBody Boolean checkLogin(HttpSession session,  @RequestBody HashMap<String, Object> map) throws Exception {
-		List<MemberDto> list =dao.checkLogin(map);
+		List<MemberDto> list =loginDao.checkLogin(map);
 		if(list.size()<2 && list.size()>0) {
 			session.setAttribute("id", list.get(0).getId());
 			return true;

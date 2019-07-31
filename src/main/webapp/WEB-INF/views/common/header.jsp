@@ -5,13 +5,14 @@
 		<div>
 			<div id="cssmenu">
 				<ul>
-				   <li class='active'><a href="index.html">제품등록</a></li>
-				   <li><a href="archive.html">자재</a></li>
-				   <li><a href="single.html">진행상황</a></li>
-				   <li><a href="contact.html">발주</a></li>
+				   <li class='active'><a href="/createProduct.do">제품등록</a></li>
+				   <li><a href="#">자재</a></li>
+				   <li><a href="#">진행상황</a></li>
+				   <li><a href="#">발주</a></li>
+				   <li><a href="/costingMain.do">원가계산서</a></li>
 				</ul>
 			</div>
-			<a href='index.html' class="logo"><p>Ys MRP</p></a>
+			<a href='/' class="logo"><p>Ys MRP</p></a>
 		</div>
 	</div>
 </header>
