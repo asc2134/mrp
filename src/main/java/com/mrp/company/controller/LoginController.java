@@ -25,18 +25,22 @@ public class LoginController {
 	@Autowired
 	private LoginDao loginDao;
 	
+	
+	
 	@RequestMapping("/")
+	private String main(HttpSession session) throws Exception {
+			return "main/main"; 
+	}
+	
+	@RequestMapping("/login.do")
 	private String login(HttpSession session) throws Exception {
-		if(session.getId() == null) {
 			return "login/login"; 
-		}else {
-			return "main/main";
-		}
 	}
 
 	@RequestMapping("/checkLogin.do")
 	private @ResponseBody Boolean checkLogin(HttpSession session,  @RequestBody HashMap<String, Object> map) throws Exception {
 		List<MemberDto> list =loginDao.checkLogin(map);
+		
 		if(list.size()<2 && list.size()>0) {
 			session.setAttribute("id", list.get(0).getId());
 			return true;

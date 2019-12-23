@@ -58,4 +58,5 @@ public class MemberDto {
 		this.compNum = compNum;
 	}
 	
+	
 }
