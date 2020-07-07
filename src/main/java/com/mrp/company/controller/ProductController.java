@@ -20,6 +20,6 @@ public class ProductController {
 	
 	@RequestMapping("/createProduct.do")
 	private String product() throws Exception {
-		return "product/productRegister";
+		return "product/createProduct";
 	}
 }

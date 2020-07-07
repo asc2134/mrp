@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="company">
+
+	<select id="getCompanyList" resultType="Map" parameterType="com.mrp.company.dto.PagingDto">
+		SELECT 
+		* 
+		FROM (
+				SELECT 
+					(ROW_NUMBER() OVER()) AS RN, A.* 
+				FROM 
+					(select 
+					 	* 
+					 from mrp.company
+							ORDER by compnum desc
+					) A	
+			) B
+		WHERE RN BETWEEN #{start} AND #{end}
+
+	</select>
+	
+	<select id="getAllCompanyList" resultType="Map">
+		select 
+		 	* 
+		 from mrp.company
+				ORDER by compnum desc
+	</select>
+	
+	<select id="getCompanyCount" resultType="Integer">
+		SELECT COUNT(*) FROM MRP.COMPANY
+	</select>
+	<select id="checkCompany" parameterType="Map" resultType="Map">
+		SELECT * FROM MRP.COMPANY
+			WHERE
+				compName = #{compName} and
+				address = #{address} and
+				faxNum = #{faxNum} and
+				compPhone = #{compPhone}
+			
+	</select>
+	
+	<select id="getCompany" resultType="Map">
+		select * from mrp.company
+					where compNum = #{compNum} ::integer
+	</select>
+	
+	<insert id="createComapny" parameterType="Map">
+		insert into mrp.company values(nextval('seq_company'),#{compName},#{address},#{faxNum},#{compPhone})
+	</insert>
+	
+	<update id="updateCompany" parameterType="Map">
+		update mrp.company 
+			set
+				compName = #{compName},
+				address = #{address},
+				faxNum = #{faxNum},
+				compPhone = #{compPhone}  
+			where
+				compNum = #{compNum} ::integer
+				
+	</update>
+	
+	<delete id="deleteCompany" parameterType="Map">
+		delete from mrp.company where compNum = #{compNum} ::integer 
+	</delete>
+	
+</mapper>

@@ -19,13 +19,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
        http.csrf().disable();
-       
-       /*  나는 관리자화면이 없기 떄문에 비할성화 나중에 관리자화면추가시 변경 */
        http.authorizeRequests()
        .antMatchers("/admin/**").hasRole("ADMIN") // 경로에 어드민 경로가 있으면 어드민 권한이있어야됨
        .antMatchers("//**").hasRole("MEMBER")
        .antMatchers("/**").permitAll();
-       /**/
        
        //로그인 관련
        http.formLogin().loginPage("/login.do").defaultSuccessUrl("/").permitAll();

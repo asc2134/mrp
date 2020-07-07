@@ -29,7 +29,7 @@ public class LoginController {
 	
 	@RequestMapping("/")
 	private String main(HttpSession session) throws Exception {
-			return "main/main"; 
+		return "main/main"; 
 	}
 	
 	@RequestMapping("/login.do")

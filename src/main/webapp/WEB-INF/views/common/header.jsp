@@ -9,7 +9,7 @@
 			<div id="cssmenu">
 				<ul>
 				   <li class='active'><a href="/createProduct.do">제품등록</a></li>
-				   <li><a href="#">자재</a></li>
+				   <li><a href="/materialMain.do">자재</a></li>
 				   <li><a href="/login/login">업무</a></li>
 				   <li><a href="#">발주</a></li>
 				   <li><a href="/costingMain.do">원가계산서</a></li>

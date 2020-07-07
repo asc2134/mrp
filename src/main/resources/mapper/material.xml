@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="material">
+	<select id="getLeatherCount" resultType="Integer">
+		SELECT COUNT(*) FROM MRP.LEATHER
+	</select>
+	
+	<select id="getSubsidiaryCount" resultType="Integer">
+		SELECT COUNT(*) FROM MRP.subsidiary
+	</select>
+	
+	<select id="getAccessoryCount" resultType="Integer">
+		SELECT COUNT(*) FROM MRP.ACCESSORY
+	</select>
+	
+	<select id="getMaterialotherCount" resultType="Integer">
+		SELECT COUNT(*) FROM MRP.MATERIALOTHER
+	</select>
+	
+	<select id="getLeatherList" resultType="Map" parameterType="com.mrp.company.dto.PagingDto">
+		SELECT 
+		*
+		FROM (
+				SELECT 
+					(ROW_NUMBER() OVER()) AS RN, A.* 
+				FROM 
+					(select 
+					 	*
+					 from 
+					 	mrp.leather as leather, mrp.company as company
+					 		where leather.compnum = company.compnum
+								ORDER by leatherNum desc
+					) A	
+			) B
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="getSubsidiaryList" resultType="Map" parameterType="com.mrp.company.dto.PagingDto">
+		SELECT 
+		* 
+		FROM (
+				SELECT 
+					(ROW_NUMBER() OVER()) AS RN, A.* 
+				FROM 
+					(select 
+					 	* 
+					 from mrp.subsidiary as sub, mrp.company as com
+					 		where sub.compnum = com.compnum
+									ORDER by subsidiaryNum desc
+					) A	
+			) B
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="getAccessoryList" resultType="Map" parameterType="com.mrp.company.dto.PagingDto">
+		SELECT 
+		* 
+		FROM (
+				SELECT 
+					(ROW_NUMBER() OVER()) AS RN, A.* 
+				FROM 
+					(select 
+					 	* 
+					 from mrp.accessory as acc, mrp.company as com
+					 		where acc.compnum = com.compnum
+					) A	
+			) B
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="getMaterialotherList" resultType="Map" parameterType="com.mrp.company.dto.PagingDto">
+		SELECT 
+		* 
+		FROM (
+				SELECT 
+					(ROW_NUMBER() OVER()) AS RN, A.* 
+				FROM 
+					(select 
+					 	* 
+					 from mrp.materialother as mo, mrp.company as com
+					 		where mo.compnum = com.compnum
+					) A	
+			) B
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+	<insert id="createLeather">
+		insert into mrp.leather values(nextval('seq_leather'),#{leatherType},#{leatherName},#{amount} ::integer, #{compNum} ::integer, #{price} ::integer)
+	</insert>
+	
+	<insert id="createSubsidiary">
+		insert into mrp.subsidiary values(nextval('seq_subsidiary'),#{subsidiaryName},#{subsidiaryType},#{amount} ::integer, #{compNum} ::integer ,#{price} ::integer)
+	</insert>
+	
+	<insert id="createAccessory">
+		insert into mrp.accessory values(nextval('seq_accessory'),#{accessoryName},#{amount} ::integer,#{compNum} ::integer, #{price} ::integer)
+	</insert>
+	
+	<insert id="createMaterialOther">
+		insert into mrp.materialother values(nextval('seq_materialother'),#{materialOtherName},#{amount} ::integer,#{compNum} ::integer, #{price} ::integer)
+	</insert>	
+	
+	<select id="getLeather" resultType="Map">
+		select * from mrp.leather as lea, mrp.company as com
+					where lea.compnum = com.compnum and lea.leatherNum = #{leatherNum} ::integer
+	</select>
+	
+	<select id="getSubsidiary" resultType="Map">
+		select * from mrp. subsidiary as sub , mrp.company as com
+					where sub.compnum =  com.compnum and sub.subsidiaryNum = #{subsidiaryNum} ::integer
+	</select>
+	
+	<select id="getAccessory" resultType="Map">
+		select * from mrp.accessory as acc , mrp.company as com
+					where acc.compnum =  com.compnum and accessoryNum = #{accessoryNum} ::integer
+	</select>
+	
+	<select id="getMaterialOther" resultType="Map">
+		select * from mrp.materialother as mo , mrp.company as com
+					where mo.compnum =  com.compnum and materialOtherNum = #{materialOtherNum} ::integer
+	</select>
+	
+	<delete id="deleteLeather" parameterType="Map">
+		delete from mrp.leather where leatherNum = #{leatherNum} ::integer 
+	</delete>
+	
+	<delete id="deleteAccessory" parameterType="Map">
+		delete from mrp.accessory where accessoryNum = #{accessoryNum} ::integer 
+	</delete>
+	
+	<delete id="deleteSubsidiary" parameterType="Map">
+		delete from mrp.subsidiary where subsidiaryNum = #{subsidiaryNum} ::integer 
+	</delete>
+	
+	<delete id="deleteMaterialOther" parameterType="Map">
+		delete from mrp.materialother where materialOtherNum = #{materialOtherNum} ::integer 
+	</delete>
+	
+	<update id="updateLeather" parameterType="Map">
+		update mrp.leather 
+			set
+				leatherName = #{leatherName},
+				leatherType = #{leatherType},
+				amount = #{amount} ::integer,
+				compNum = #{compNum}  ::integer,
+				price = #{price} ::integer 
+			where
+				leatherNum = #{leatherNum} ::integer
+				
+	</update>
+	
+	<update id="updateSubsidiary" parameterType="Map">
+		update mrp.subsidiary 
+			set
+				subsidiaryName = #{subsidiaryName},
+				subsidiaryType = #{subsidiaryType},
+				amount = #{amount} ::integer,
+				compNum = #{compNum} ::integer,
+				price = #{price} ::integer   
+			where
+				subsidiaryNum = #{subsidiaryNum} ::integer
+				
+	</update>
+	
+	<update id="updateAccessory" parameterType="Map">
+		update mrp.accessory 
+			set
+				accessoryName = #{accessoryName},
+				amount = #{amount} ::integer,
+				compNum = #{compNum} ::integer,
+				price = #{price} ::integer   
+			where
+				accessoryNum = #{accessoryNum} ::integer
+				
+	</update>
+	
+	<update id="updateMaterialOther" parameterType="Map">
+		update mrp.materialOther 
+			set
+				materialOtherName = #{materialOtherName},
+				amount = #{amount} ::integer,
+				compNum = #{compNum} ::integer ,
+				price = #{price} ::integer  
+			where
+				materialOtherNum = #{materialOtherNum} ::integer
+				
+	</update>
+	
+</mapper>
