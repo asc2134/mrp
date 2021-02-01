@@ -41,9 +41,9 @@ $( document ).ready( function() {
 
 function searchMaterial(){
 	var status =  $(".nav-link.active").attr("id");
+	var id = "search" + status.charAt(0).toUpperCase() + status.slice(1);
 	
-	
-	
+	window.location.replace("materialMain.do?searchType=" + $("#" + id).val() + "&search=" +$("#search").val());
 	
 }
 
@@ -178,7 +178,7 @@ function changeMenu(obj){
 								  </li>
 								</ul>
 							   <form class="form-inline my-2 my-lg-0" style="float: right;">
-							     <input class="form-control mr-sm-2" type="text" placeholder="검색">
+							     <input class="form-control mr-sm-2" type="text" id="search" placeholder="검색">
 							     <button class="btn btn-secondary my-2 my-sm-0" type="button" onclick="searchMaterial()">검색</button>
 							   </form>
 							   <select id="searchCompany" class="custom-select" style="width: 120px; float: right;">
@@ -187,12 +187,12 @@ function changeMenu(obj){
 							     <option value="address">주소</option>
 							   </select>
 							   <select id="searchLeather" class="custom-select" style="width: 120px; float: right; display: none;">
-							     <option value="compName">자제명</option>
+							     <option value="leatherName">자제명</option>
 							     <option value="leatherType">자제타입</option>
 							     <option value="compName">회사이름</option>
 							   </select>
 							   <select id="searchSubsidiary" class="custom-select " style="width: 120px; float: right; display: none;">
-							     <option value="compName">자제명</option>
+							     <option value="subsidiaryName">자제명</option>
 							     <option value="subsidiaryType">자제타입</option>
 							     <option value="compName">회사이름</option>
 							   </select>

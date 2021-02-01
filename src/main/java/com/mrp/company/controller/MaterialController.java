@@ -43,26 +43,30 @@ public class MaterialController {
 			, @RequestParam(required=false, defaultValue= "10")String materialOtherCntPerPage
 			, @RequestParam(required=false, defaultValue= "company")String materialType ) throws Exception {
 		
+		
+		//페이징을위한 갯수 세팅
 		int companyCount = companyDao.getCompanyCount();
 		int leatherCount = materialDao.getLeatherCount();
 		int subsidiaryCount = materialDao.getSubsidiaryCount();
 		int accessoryCount = materialDao.getAccessoryCount();
 		int materialOtherCount = materialDao.getMaterialOtherCount();
 		
+		
+		//페이징관련변수 
 		PagingDto companyDto = new PagingDto(companyCount, Integer.parseInt(companyNowPage), Integer.parseInt(companyCntPerPage));
 		PagingDto leatherDto = new PagingDto(leatherCount, Integer.parseInt(leatherNowPage), Integer.parseInt(leatherCntPerPage));
 		PagingDto accessoryDto = new PagingDto(accessoryCount, Integer.parseInt(accessoryNowPage), Integer.parseInt(accessoryCntPerPage));
 		PagingDto subsidiaryDto = new PagingDto(subsidiaryCount, Integer.parseInt(subsidiaryNowPage), Integer.parseInt(subsidiaryCntPerPage));
 		PagingDto materialOtherDto = new PagingDto(materialOtherCount, Integer.parseInt(materialOtherNowPage), Integer.parseInt(materialOtherCntPerPage));
 		
-		
+		//디비
 		List<Map<String,String>> companyList = companyDao.getCompanyList(companyDto);
 		List<Map<String,String>> leatherList = materialDao.getLeatherList(leatherDto);
 		List<Map<String,String>> subsidiaryList = materialDao.getSubsidiaryList(subsidiaryDto);
 		List<Map<String,String>> accessoryList = materialDao.getAccessoryList(accessoryDto);
 		List<Map<String,String>> materialOtherList = materialDao.getMaterialOtherList(materialOtherDto);
 		
-		
+		//리퀘스트세팅
 		req.setAttribute("companyDto", companyDto);
 		req.setAttribute("leatherDto", leatherDto);
 		req.setAttribute("subsidiaryDto", subsidiaryDto);

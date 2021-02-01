@@ -271,7 +271,7 @@ $(function() {
 							  </tbody>
 							</table>
 							<div style=" width: 300px; height:300px; margin-left:315px;">
-								<img id="blah"  src="" />
+								<img id="blah"  src="" style="height: 300px; width: 300px" />
 							</div> 
 							
 							<div style=" width: 100%;">

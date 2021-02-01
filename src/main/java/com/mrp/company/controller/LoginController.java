@@ -24,21 +24,22 @@ public class LoginController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	@Autowired
 	private LoginDao loginDao;
-	
+	@Autowired
+	public HttpSession session;
 	
 	
 	@RequestMapping("/")
-	private String main(HttpSession session) throws Exception {
-		return "main/main"; 
+	private String main() throws Exception {
+		return "login/login"; 
 	}
 	
 	@RequestMapping("/login.do")
-	private String login(HttpSession session) throws Exception {
+	private String login() throws Exception {
 			return "login/login"; 
 	}
 
 	@RequestMapping("/checkLogin.do")
-	private @ResponseBody Boolean checkLogin(HttpSession session,  @RequestBody HashMap<String, Object> map) throws Exception {
+	private @ResponseBody Boolean checkLogin(@RequestBody HashMap<String, Object> map) throws Exception {
 		List<MemberDto> list =loginDao.checkLogin(map);
 		
 		if(list.size()<2 && list.size()>0) {
@@ -50,13 +51,18 @@ public class LoginController {
 	}
 	@RequestMapping("/loginOk.do")
 	private String loginOk() throws Exception {
-		return "main/main";
+		String id = (String) session.getAttribute("id");
+		
+		if(id != null) {
+			return "main/main";
+		}else {
+			return "login/login";
+		}
 	}
 	
 	@RequestMapping("/logout.do")
-	private String logout(HttpSession session) throws Exception {
-		session.removeAttribute("id");
-		session.removeAttribute("compNum");
+	private String logout() throws Exception {
+		session.invalidate();
 		return "login/login";
 	}
 	
