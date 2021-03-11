@@ -122,6 +122,20 @@
 					where mo.compnum =  com.compnum and materialOtherNum = #{materialOtherNum} ::integer
 	</select>
 	
+	<select id="getAllLeatherList" resultType="Map">
+		select * from mrp.leather
+	</select>
+	<select id="getAllSubsidiaryList" resultType="Map">
+		select * from mrp. subsidiary
+	</select>
+	<select id="getAllAccessoryList" resultType="Map">
+		select * from mrp.accessory
+	</select>
+	<select id="getAllMaterialOtherList" resultType="Map">
+		select * from mrp.materialother
+	</select>
+	
+	
 	<delete id="deleteLeather" parameterType="Map">
 		delete from mrp.leather where leatherNum = #{leatherNum} ::integer 
 	</delete>

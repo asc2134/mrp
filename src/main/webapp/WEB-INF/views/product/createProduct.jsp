@@ -1,9 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script type="text/javascript">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<link rel="stylesheet" href="/static/css/select2.css">
+<link rel="stylesheet" href="/static/css/select2-bootstrap.css">
+<script src="/static/js/select2.js"></script>
+<script type="text/javascript">
 $(document).ready(function(){
-	
+	$('.selCustom').select2({
+		placeholder: "검색하세요"
+		
+	});
 	$("#confirm").click(function() {
 		//JSONObject productCost = new JSONObject();
 		var productCost = new Object();
@@ -128,7 +135,6 @@ function autoCal(){
 	$('#margin').val(Number($('#costSum').val()) * Number( '0.'+ $('#percentMargin').val()));
 	$('#allSum').val(Number($('#costSum').val()) + Number($('#margin').val()));
 }
-
 //원자제 추가,삭제 rowspan 계산
 function calLine(data){
 	
@@ -149,14 +155,27 @@ function addLeather(data){
 	var intLeatherCnt = 0;
 	var addNode;
 	var lastNodeID;
+	var inList = new Array();
+	var outList = new Array();
+	
+	<c:forEach var="allLeatherList" items="${allLeatherList}">
+		<c:if test="${allLeatherList.leathertype eq '내피'}">
+			inList.push("${allLeatherList}");
+		</c:if>
+		<c:if test="${allLeatherList.leathertype eq '외피'}">
+		outList.push("${allLeatherList}");
+		</c:if>
+	</c:forEach>
 	
 	if(data == 'out'){
 		outLeatherCnt = $('#materialList').children().children("[id^='outLeather']").length;
+		
+		
 
 		addNode = "<tr>";
 		addNode += "<td id=	'outLeather" + Number(outLeatherCnt + 1 )  + "'>외피 "+ Number(outLeatherCnt + 1 ) + "</td>";
-		addNode += "<td><input class='form-control form-control-sm' type='text' id='outLeatherCode"+Number(outLeatherCnt + 1 )+"'></td>";
-		addNode += "<td><input class='form-control form-control-sm' type='text' id='outLeatherComp"+Number(outLeatherCnt + 1 )+"'></td>";
+		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'outLeatherCode"+Number(outLeatherCnt + 1 )+"' ><option></option></select></td>";
+		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'outLeatherComp"+Number(outLeatherCnt + 1 )+"' ><option></option></select></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='outLeatherRequirement"+Number(outLeatherCnt + 1 )+"'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='outLeatherCost"+Number(outLeatherCnt + 1 )+"'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='outLeatherPrice"+Number(outLeatherCnt + 1 )+"' readonly='readonly'></td>";
@@ -170,18 +189,20 @@ function addLeather(data){
 
 		addNode = "<tr>";
 		addNode += "<td id=	'inLeather" + Number(intLeatherCnt + 1 )  + "'>내피 "+ Number(intLeatherCnt + 1 ) + "</td>";
-		addNode += "<td><input class='form-control form-control-sm' type='text' id='inLeatherCode"+ Number(intLeatherCnt + 1 ) + "'></td>";
-		addNode += "<td><input class='form-control form-control-sm' type='text' id='inLeatherComp"+ Number(intLeatherCnt + 1 ) + "'></td>";
+		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'inLeatherCode"+Number(intLeatherCnt + 1 )+"' ><option></option></select></td>";
+		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'inLeatherComp"+Number(intLeatherCnt + 1 )+"' ><option></option></select></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='inLeatherRequirement"+ Number(intLeatherCnt + 1 ) + "'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='inLeatherCost"+ Number(intLeatherCnt + 1 ) + "'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='inLeatherPrice"+ Number(intLeatherCnt + 1 ) + "'  readonly = 'readonly'></td>";
 		addNode += "</tr>";
 		
+		
 		lastNodeID = $('#materialList').children().children("[id^='inLeather']").eq(intLeatherCnt -1).attr('id');
 		$('#' + lastNodeID).parent().after(addNode);
 		
 	}
-	
+	$('.selCustom').select2({
+	});
 }
 
 //원자제 삭제
@@ -217,7 +238,7 @@ $(function() {
     });
     function readURL(input) {
         if (input.files && input.files[0]) {
-        var reader = new FileReader();
+        var reader = new FileReader(); 
 
         reader.onload = function (e) {
                 $('#blah').attr('src', e.target.result);
@@ -226,8 +247,20 @@ $(function() {
         }
     }
 });
-</script>
 
+</script>
+<style type="text/css">
+.select2-selection__rendered {
+    height: 31px !important;
+    font-size: 14px !important;
+}
+.select2-container--default .select2-selection--single{
+    height: 33px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+    height: 34px !important;
+}
+</style>
 <section id="container" class="home-page">
 	<div class="wrap-container clearfix">
 		<div id="main-content">
@@ -252,7 +285,11 @@ $(function() {
 							    <tr>
 							      <th scope="row">소재</th>
 							      <td>
-							      	<input class="form-control form-control-sm" type="text" placeholder="소재" id="leather" required="required">
+							      	<option></option>
+							      	<select class="form-control selCustom" style="width: 100%;" >
+							      		<option></option>
+							      	</select>
+			
 							      </td>
 							    </tr>
 							    <tr>
@@ -275,10 +312,10 @@ $(function() {
 							</div> 
 							
 							<div style=" width: 100%;">
-								<button class="btn btn-outline-info"style="float: right;" onclick="delLeather('in')">내피제거</button>
-								<button class="btn btn-outline-info"style="float: right; margin-right: 4px" onclick="addLeather('in')">내피추가</button>
-								<button class="btn btn-outline-info"style="" onclick="addLeather('out')">외피추가</button>
-								<button class="btn btn-outline-info"style="" onclick="delLeather('out')">외피제거</button>
+								<button class="btn btn-outline-info" style="float: right;" onclick="delLeather('in')">내피제거</button>
+								<button class="btn btn-outline-info adle" style="float: right; margin-right: 4px" onclick="addLeather('in')">내피추가</button>
+								<button class="btn btn-outline-info adle" style="" onclick="addLeather('out')">외피추가</button>
+								<button class="btn btn-outline-info" style="" onclick="delLeather('out')">외피제거</button>
 							</div>
 							<table class="table table-bordered" style="margin-top: 20px;">
 							  <thead>
@@ -295,32 +332,103 @@ $(function() {
 							    <tr>
 							      <th id="leatherMaterial" scope="row" rowspan="4">원자재</th>
 							      <td id="outLeather1">외피 1</td>
-							      <td><input class="form-control form-control-sm" type="text" id="outLeatherCode1"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="outLeatherComp1"></td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherCode1" >
+							      		<option></option>
+							      		<c:forEach var="allLeatherList" items="${allLeatherList}">
+							      			<c:if test="${allLeatherList.leathertype eq '외피'}"> 
+								    			<option value="${allLeatherList.leathernum}">${allLeatherList.leathername}</option>
+											</c:if>								    			
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherComp1">
+							      		<option></option>
+							      		
+										<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherRequirement1"></td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherCost1"></td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherPrice1" readonly="readonly"></td>
 							    </tr>
 							    <tr>
 							      <td id="outLeather2">외피 2</td>
-							      <td><input class="form-control form-control-sm" type="text" id="outLeatherCode2"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="outLeatherComp2"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="outLeatherCode2"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="outLeatherComp2"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherCode2">
+							      		<option></option>
+							      		<c:forEach var="allLeatherList" items="${allLeatherList}"> 
+								    		<c:if test="${allLeatherList.leathertype eq '외피'}"> 
+								    			<option value="${allLeatherList.leathernum}">${allLeatherList.leathername}</option>
+											</c:if>	
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherComp2" >
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherRequirement2"></td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherCost2"></td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherPrice2" readonly="readonly"></td>
 							    </tr>
 							    <tr>
 							      <td id="outLeather3">외피 3</td>
-							      <td><input class="form-control form-control-sm" type="text" id="outLeatherCode3"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="outLeatherComp3"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="outLeatherCode3"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="outLeatherComp3"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherCode3">
+							      		<option></option>
+							      		<c:forEach var="allLeatherList" items="${allLeatherList}"> 
+								    		<c:if test="${allLeatherList.leathertype eq '외피'}"> 
+								    			<option value="${allLeatherList.leathernum}">${allLeatherList.leathername}</option>
+											</c:if>	
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherComp3">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherRequirement3"></td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherCost3"></td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherPrice3" readonly="readonly"></td>
 							    </tr>
 							    <tr>
 							      <td id="inLeather1">내피</td>
-							      <td><input class="form-control form-control-sm" type="text" id="inLeatherCode1"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="inLeatherComp1"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="inLeatherCode1"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="inLeatherComp1"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="inLeatherCode1">
+							      		<option></option>
+							      		<c:forEach var="allLeatherList" items="${allLeatherList}"> 
+								    		<c:if test="${allLeatherList.leathertype eq '내피'}"> 
+								    			<option value="${allLeatherList.leathernum}">${allLeatherList.leathername}</option>
+											</c:if>	
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="inLeatherComp1">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="inLeatherRequirement1"></td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="inLeatherCost1"></td>
 							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="inLeatherPrice1" readonly="readonly"></td>
@@ -333,8 +441,26 @@ $(function() {
 							    <tr>
 							      <td scope="row" rowspan="15">부자재</td>
 							      <td>창</td>
-							      <td><input class="form-control form-control-sm" type="text" id="soleCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="soleComp"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="soleCode"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="soleComp"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="soleCode">
+							      		<option></option>
+							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
+								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '창'}">
+											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
+											</c:if>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="soleComp">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td></td>
 							      <td></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="solePrice"></td>
@@ -342,111 +468,339 @@ $(function() {
 							    <tr>
 							      <td>창가공</td>
 							      <td><input class="form-control form-control-sm" type="text" id="soleProCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="soleProComp"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="soleProComp"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="soleProComp">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td></td>
 							      <td></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="soleProPrice"></td>
 							    </tr>
 							    <tr>
 							      <td>굽</td>
-							      <td><input class="form-control form-control-sm" type="text" id="heelCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="heelComp"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="heelCode"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="heelComp"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="heelCode">
+							      		<option></option>
+							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
+								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '굽'}">
+											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
+											</c:if>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="heelComp">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td></td>
 							      <td></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="heelPrice"></td>
 							    </tr>
 							    <tr>
 							      <td>중창</td>
-							      <td><input class="form-control form-control-sm" type="text" id="midSoleCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="midSoleComp"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="midSoleCode"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="midSoleComp"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="midSoleCode">
+							      		<option></option>
+							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
+								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '중창'}">
+											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
+											</c:if>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="midSoleComp" >
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td></td>
 							      <td></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="midSolePrice"></td>
 							    </tr>
 							    <tr>
 							      <td>월형</td>
-							      <td><input class="form-control form-control-sm" type="text" id="counterCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="counterComp"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="counterCode"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="counterComp"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="counterCode">
+							      		<option></option>
+							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
+								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '월형'}">
+											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
+											</c:if>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="counterComp">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td></td>
 							      <td></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="counterPrice"></td>
 							    </tr>
 							    <tr>
 							      <td>선심</td>
-							      <td><input class="form-control form-control-sm" type="text" id="insoleCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="insoleComp"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="insoleCode"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="insoleComp"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="insoleCode">
+							      		<option></option>
+							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
+								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '선심'}">
+											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
+											</c:if>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="insoleComp">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td></td>
 							      <td></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="insolePrice"></td>
 							    </tr>
 							    <tr>
 							      <td>까래</td>
-							      <td><input class="form-control form-control-sm" type="text" id="sockLiningCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="sockLiningComp"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="sockLiningCode"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="sockLiningComp"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="sockLiningCode">
+							      		<option></option>
+							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
+								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '까래'}">
+											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
+											</c:if>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="sockLiningComp" >
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td></td>
 							      <td></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="sockLiningPrice"></td>
 							    </tr>
 							    <tr>
 							      <td>쿠션</td>
-							      <td><input class="form-control form-control-sm" type="text" id="cushionCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="cushionComp"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="cushionCode"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="cushionComp"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="cushionCode">
+							      		<option></option>
+							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
+								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '쿠션'}">
+											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
+											</c:if>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="cushionComp">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td></td>
 							      <td></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="cushionPrice"></td>
 							    </tr>
 							     <tr>
 							      <td>갑보</td>
-							      <td><input class="form-control form-control-sm" type="text" id="heelPadCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="heelPadComp"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="heelPadCode"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="heelPadComp"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="heelPadCode">
+							      		<option></option>
+							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
+								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '갑보'}">
+											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
+											</c:if>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="heelPadComp">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td></td>
 							      <td></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="heelPadPrice"></td>
 							    </tr>
 							    <tr>
 							      <td>기타소모재</td>
-							      <td></td>
-							      <td></td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" >
+							      		<option></option>
+										<c:forEach var="allMaterialOtherList" items="${allMaterialOtherList}"> 
+								    		<option value="${allMaterialOtherList.materialothernum}">${allMaterialOtherList.materialothername}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" >
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td></td>
 							      <td></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="otherPrice"></td>
 							    </tr>
 							    <tr>
 							      <td>장식</td>
-							      <td><input class="form-control form-control-sm" type="text" id="decoCode1"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="decoComp1"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="decoCode1"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="decoComp1"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode1">
+							      		<option></option>
+							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
+								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="decoComp1">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td><input class="form-control form-control-sm" type="number" id="decoRequirement1"></td>
 							      <td><input class="form-control form-control-sm" type="number" id="decoCost1"></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice1"></td>
 							    </tr>
 							    <tr>
 							      <td></td>
-							      <td><input class="form-control form-control-sm" type="text" id="decoCode2"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="decoComp2"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="decoCode2"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="decoComp2"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" >
+							      		<option></option>
+							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
+								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" >
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td><input class="form-control form-control-sm" type="number" id="decoRequirement2"></td>
 							      <td><input class="form-control form-control-sm" type="number" id="decoCost2"></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice2"></td>
 							    </tr>
 							    <tr>
 							      <td></td>
-							      <td><input class="form-control form-control-sm" type="text" id="decoCode3"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="decoComp3"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="decoCode3"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="decoComp3"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode3">
+							      		<option></option>
+							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
+								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="decoComp3">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td><input class="form-control form-control-sm" type="number" id="decoRequirement3"></td>
 							      <td><input class="form-control form-control-sm" type="number" id="decoCost3"></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice3"></td>
 							    </tr>
 							    <tr>
 							      <td></td>
-							      <td><input class="form-control form-control-sm" type="text" id="decoCode4"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="decoComp4"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="decoCode4"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="decoComp4"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode4">
+							      		<option></option>
+							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
+								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="decoComp4">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td><input class="form-control form-control-sm" type="number" id="decoRequirement4"></td>
 							      <td><input class="form-control form-control-sm" type="number" id="decoCost4"></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice4"></td>
 							    </tr>
 							    <tr>
 							      <td></td>
-							      <td><input class="form-control form-control-sm" type="text" id="decoCode5"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="decoComp5"></td>
+							      <!-- <td><input class="form-control form-control-sm" type="text" id="decoCode5"></td>
+							      <td><input class="form-control form-control-sm" type="text" id="decoComp5"></td> -->
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode5">
+							      		<option></option>
+							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
+								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
+							      <td>
+							      	<select class="form-control selCustom" style="width: 100%;" id="decoComp5">
+							      		<option></option>
+							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
+										</c:forEach>
+							      	</select>
+							      </td>
 							      <td><input class="form-control form-control-sm" type="number" id="decoRequirement5"></td>
 							      <td><input class="form-control form-control-sm" type="number" id="decoCost5"></td>
 							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice5"></td>

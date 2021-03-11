@@ -75,6 +75,7 @@ $( document ).ready( function() {
 				                      <option>선심</option>
 				                      <option>까래</option>
 				                      <option>쿠션</option>
+				                      <option>갑보</option>
 			                   	  </select>
 								</div>
 						   </div>

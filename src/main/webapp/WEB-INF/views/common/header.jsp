@@ -15,7 +15,7 @@
 				   <li><a href="/costingMain.do">원가계산서</a></li>
 				</ul>
 			</div>
-			<a href='/' class="logo"><p>Ys MRP</p></a>
+			<a href='/loginOk.do' class="logo"><p>Ys MRP</p></a>
 		</div>
 	</div>
 </header>

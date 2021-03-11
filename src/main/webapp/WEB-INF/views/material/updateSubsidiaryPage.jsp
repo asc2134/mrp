@@ -91,6 +91,7 @@ $( document ).ready( function() {
 					                      <option value="선심">선심</option>
 					                      <option value="까래">까래</option>
 					                      <option value="쿠션">쿠션</option>
+					                      <option value="갑보">갑보</option>
 				                   	  </select>
 									</div>
 							   </div>

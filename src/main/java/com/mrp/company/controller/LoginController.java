@@ -30,7 +30,8 @@ public class LoginController {
 	
 	@RequestMapping("/")
 	private String main() throws Exception {
-		return "login/login"; 
+		
+		return "login/login";
 	}
 	
 	@RequestMapping("/login.do")

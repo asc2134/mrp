@@ -54,7 +54,6 @@ public class MaterialDao {
 		// TODO Auto-generated method stub
 		return sql.selectList("material.getMaterialotherList", materialotherDto);
 	}
-
 	public int createLeather(HashMap<String, String> map) {
 		// TODO Auto-generated method stub
 		return sql.insert("material.createLeather", map);
@@ -133,6 +132,26 @@ public class MaterialDao {
 	public int updateMaterialOther(HashMap<String, String> map) {
 		// TODO Auto-generated method stub
 		return sql.update("material.updateMaterialOther", map);
+	}
+
+	public List<Map<String, String>> getAllLeatherList() {
+		// TODO Auto-generated method stub
+		return sql.selectList("material.getAllLeatherList");
+	}
+
+	public List<Map<String, String>> getAllSubsidiaryList() {
+		// TODO Auto-generated method stub
+		return sql.selectList("material.getAllSubsidiaryList");
+	}
+
+	public List<Map<String, String>> getAllAccessoryList() {
+		// TODO Auto-generated method stub
+		return sql.selectList("material.getAllAccessoryList");
+	}
+
+	public List<Map<String, String>> getAllMaterialOtherList() {
+		// TODO Auto-generated method stub
+		return sql.selectList("material.getAllMaterialOtherList");
 	}
 
 
