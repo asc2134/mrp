@@ -7,23 +7,41 @@
 <script src="/static/js/select2.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$('.selCustom').select2({
-		placeholder: "검색하세요"
-		
-	});
+	$('.selCustom').select2();
+	
 	$("#confirm").click(function() {
-		//JSONObject productCost = new JSONObject();
 		var productCost = new Object();
 		var materialList = new Object();
 		var leatherMaterial = new Object();
 		var subsidiarMaterial = new Object();
 		var expense = new Object();
+		var outLeatherCnt = $('#materialList').children().children("[id^='outLeather']").length;
+		var intLeatherCnt = $('#materialList').children().children("[id^='inLeather']").length;
 		
+		
+		
+		
+		for(var i=1 ; i<= outLeatherCnt; i++){
+			leatherMaterial['outLeather' + i]  = $("#outLeather" + i).val();
+			leatherMaterial['outLeatherCode' + i] = $("#outLeatherCode" + i).val();
+			leatherMaterial['outLeatherComp' + i] = $("#outLeatherComp" + i).val();
+			leatherMaterial['outLeatherRequirement' + i] = $("#outLeatherRequirement" + i).val();
+			leatherMaterial['outLeatherCost' + i] = $("#outLeatherCost" + i).val();
+			leatherMaterial['outLeatherPrice' + i] = $("#outLeatherPrice" + i).val();
+		}
+		for(var i=1 ; i<= intLeatherCnt; i++){
+			leatherMaterial['inLeather' + i]  = $("#inLeather" + i).val();
+			leatherMaterial['inLeatherCode' + i] = $("#inLeatherCode" + i).val();
+			leatherMaterial['inLeatherComp' + i] = $("#inLeatherComp" + i).val();
+			leatherMaterial['inLeatherRequirement' + i] = $("#inLeatherRequirement" + i).val();
+			leatherMaterial['inLeatherCost' + i] = $("#inLeatherCost" + i).val();
+			leatherMaterial['inLeatherPrice' + i] = $("#inLeatherPrice" + i).val();
+		}
 		
 		materialList.supplier = $("#supplier").val();
 		materialList.designNum = $("#designNum").val();
 		materialList.leather = $("#leather").val();
-		materialList.sh_type = $("#sh_type").val();
+		materialList.gender = $("#gender").val();
 		materialList.upload_file = $("#upload_file").val();
 		materialList.costSum = $("#costSum").val();
 		materialList.percentMargin = $("#percentMargin").val();
@@ -101,8 +119,27 @@ $(document).ready(function(){
 		productCost.expense = expense;
 		
 		
-	});
-
+		
+		$.ajax({
+				type : "POST",
+				url : "/registProduct.do",
+				data : JSON.stringify(productCost),
+				dataType: "json",
+				contentType:"application/json;charset=UTF-8",
+				success : function(data){
+					if(data){
+						location.href="costingMain.do"
+					}else{
+						alert('등록이 실패하였습니다.');
+					}
+				},
+				error:function(request,status,error){
+			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			       
+			    }
+			});
+		
+	}); 
 });
 
 
@@ -154,18 +191,50 @@ function addLeather(data){
 	var outLeatherCnt = 0;
 	var intLeatherCnt = 0;
 	var addNode;
+	var outNode;
+	var inNode;
+	var cNode;
 	var lastNodeID;
-	var inList = new Array();
-	var outList = new Array();
+	var lList = new Array();
+	var cList = new Array();
 	
+	//JSTL을 이용하여 가져온 데이터를 JSON형식으로 변경 후  array로 만든다 (형식이달라서 이런식으로 밖에 못함)
+	//
 	<c:forEach var="allLeatherList" items="${allLeatherList}">
-		<c:if test="${allLeatherList.leathertype eq '내피'}">
-			inList.push("${allLeatherList}");
-		</c:if>
-		<c:if test="${allLeatherList.leathertype eq '외피'}">
-		outList.push("${allLeatherList}");
-		</c:if>
+		var json = new Object();
+		json.leathernum = "${allLeatherList.leathernum}";
+		json.compnum = "${allLeatherList.compnum}";
+		json.leathername = "${allLeatherList.leathername}";
+		json.amount = "${allLeatherList.amount}";
+		json.price = "${allLeatherList.price}";
+		json.leathertype = "${allLeatherList.leathertype}";
+		lList.push(json);
 	</c:forEach>
+		
+	<c:forEach var="allCompanyList" items="${allCompanyList}"> 
+		var json = new Object();	
+		json.compnum = "${allCompanyList.compnum}";
+		json.address = "${allCompanyList.address}";
+		json.faxnum = "${allCompanyList.faxnum}";
+		json.compphone = "${allCompanyList.compphone}";
+		json.compname =  "${allCompanyList.compname}";
+		cList.push(json);
+	</c:forEach>
+	
+	
+	
+	
+	for(var i=0; i<lList.length; i++){
+		if(lList[i].leathertype =="외피"){
+			outNode += "<option value='"+ lList[i].leathernum + "'>" +lList[i].leathername + " </option>";					
+		}else{
+			inNode += "<option value='"+ lList[i].leathernum + "'>" +lList[i].leathername + " </option>";
+		}
+	}
+	
+	for(var i=0; i<cList.length;i++){
+		cNode += "<option value='" + cList[i].compnum + "'> "+ cList[i].compname +" </option>";
+	}
 	
 	if(data == 'out'){
 		outLeatherCnt = $('#materialList').children().children("[id^='outLeather']").length;
@@ -174,8 +243,8 @@ function addLeather(data){
 
 		addNode = "<tr>";
 		addNode += "<td id=	'outLeather" + Number(outLeatherCnt + 1 )  + "'>외피 "+ Number(outLeatherCnt + 1 ) + "</td>";
-		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'outLeatherCode"+Number(outLeatherCnt + 1 )+"' ><option></option></select></td>";
-		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'outLeatherComp"+Number(outLeatherCnt + 1 )+"' ><option></option></select></td>";
+		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'outLeatherCode"+Number(outLeatherCnt + 1 )+"' ><option></option>"+outNode+"</select></td>";
+		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'outLeatherComp"+Number(outLeatherCnt + 1 )+"' ><option></option>"+cNode+"</select></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='outLeatherRequirement"+Number(outLeatherCnt + 1 )+"'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='outLeatherCost"+Number(outLeatherCnt + 1 )+"'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='outLeatherPrice"+Number(outLeatherCnt + 1 )+"' readonly='readonly'></td>";
@@ -189,8 +258,8 @@ function addLeather(data){
 
 		addNode = "<tr>";
 		addNode += "<td id=	'inLeather" + Number(intLeatherCnt + 1 )  + "'>내피 "+ Number(intLeatherCnt + 1 ) + "</td>";
-		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'inLeatherCode"+Number(intLeatherCnt + 1 )+"' ><option></option></select></td>";
-		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'inLeatherComp"+Number(intLeatherCnt + 1 )+"' ><option></option></select></td>";
+		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'inLeatherCode"+Number(intLeatherCnt + 1 )+"' ><option></option>"+inNode+"</select></td>";
+		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'inLeatherComp"+Number(intLeatherCnt + 1 )+"' ><option></option>"+cNode+"</select></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='inLeatherRequirement"+ Number(intLeatherCnt + 1 ) + "'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='inLeatherCost"+ Number(intLeatherCnt + 1 ) + "'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='inLeatherPrice"+ Number(intLeatherCnt + 1 ) + "'  readonly = 'readonly'></td>";
@@ -261,6 +330,7 @@ $(function() {
     height: 34px !important;
 }
 </style>
+<form>
 <section id="container" class="home-page">
 	<div class="wrap-container clearfix">
 		<div id="main-content">
@@ -295,8 +365,8 @@ $(function() {
 							    <tr>
 							      <th scope="row">남/여</th>
 							      <td>
-							      	<span>남</span><input type="radio" name="sh_type" value="M" style="margin-right: 10px">
-							      	<span>여</span><input type="radio" name="sh_type" value="F">
+							      	<span>남</span><input type="radio" name="gender" value="M" style="margin-right: 10px">
+							      	<span>여</span><input type="radio" name="gender" value="F">
 							      </td>
 							    </tr>
 							    <tr>
@@ -881,3 +951,4 @@ $(function() {
 		</div>
 	</div>
 </section>
+</form>

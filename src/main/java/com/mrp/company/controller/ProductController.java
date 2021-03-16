@@ -1,5 +1,6 @@
 package com.mrp.company.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mrp.company.dao.CompanyDao;
 import com.mrp.company.dao.CostDao;
@@ -47,4 +50,26 @@ public class ProductController {
 		req.setAttribute("allMaterialOtherList", allMaterialOtherList);
 		return "product/createProduct";
 	}
+	
+	@RequestMapping("/registProduct.do")
+	public @ResponseBody Boolean registProduct(@RequestBody HashMap<Object, Object> map) throws Exception {
+		Boolean result = true ;
+		
+		
+		
+		//(이미지)파일 업로드 만들어야함
+		
+		//디비단에 어떻게 저장시킬것인가.. 가져온 map 풀어서 각각의 데이터 가져와서  번호(PK)로 저장하고 
+		
+		
+		
+		
+		
+		System.out.println(map);
+		return result;
+	}
+	
+	
+	
+	
 }
