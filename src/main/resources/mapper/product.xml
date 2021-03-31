@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="product">
+	<insert id="registProductMaterial">
+		INSERT INTO mrp.product("designNum", gender, "percentMargin", "allSum", "upperEP", "shoesEP", "indirectEmploymentExpense", "factoryExpense", "administrativeExpense", supplier, "leatherMaterialSum", "subsidiarySum", "expenseSum", "costSum") VALUES (#{designNum} ::integer, #{gender}, #{percentMargin} ::integer, #{allSum} ::integer, #{upperEP} ::integer, #{shoesEP} ::integer, #{indirectEmploymentExpense} ::integer, #{factoryExpense} ::integer, #{administrativeExpense} ::integer, #{supplier}, #{leatherMaterialSum} ::integer, #{subsidiarySum} ::integer, #{expenseSum} ::integer, #{costSum} ::integer)
+	</insert>
+	
+	<insert id="registLeatherMaterial">
+		INSERT INTO mrp.pro_leather("pro_leNum", "leatherNum", "designNum", le_price, consumption, le_cost, le_type) VALUES (nextval('seq_pro_leather'), #{leatherNum} ::integer, #{designNum} ::integer, #{le_price} ::integer, #{consumption}, #{le_cost} ::integer, #{le_type})
+	</insert>
+	
+	<insert id="registOtherMaterial">
+		INSERT INTO mrp.pro_materialother( materialothernum, "designNum", "pro_otNum", ot_price) VALUES ( #{materialOtherNum} ::integer, #{designNum} ::integer, nextval('seq_pro_materialOther'), #{ot_price} ::integer)
+	</insert>
+	
+	<insert id="registAccessoryMaterial">
+		INSERT INTO mrp.pro_accessory("pro_accNum", accessorynum, "designNum", ac_price, consumption, ac_cost) VALUES (nextval('seq_pro_accessory'), #{accessorynum} ::integer, #{designNum} ::integer, #{ac_price} ::integer, #{consumption}, #{ac_cost} ::integer)
+	</insert>	
+	
+	<insert id="registSubsidiarMaterial">
+		INSERT INTO mrp.pro_subsidiary( "pro_subNum", "designNum", sub_price, "subsidiaryNum") VALUES (nextval('seq_pro_subsidiary'), #{designNum} ::integer, #{sub_price} ::integer, #{subsidiaryNum} ::integer);
+	</insert>	
+</mapper>

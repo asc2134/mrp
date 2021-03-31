@@ -68,14 +68,15 @@ $( document ).ready( function() {
 							   <div class="form-group">
 								  <label class="col-form-label col-form-label-lg" for="inputLarge">타입</label>
 								  <select class="form-control" id="subsidiaryType">
-				                      <option>창</option>
-				                      <option>굽</option>
-				                      <option>중창</option>
-				                      <option>월형</option>
-				                      <option>선심</option>
-				                      <option>까래</option>
-				                      <option>쿠션</option>
-				                      <option>갑보</option>
+				                      <option value="창">창</option>
+				                      <option value="창가공">창가공</option>
+				                      <option value="굽">굽</option>
+				                      <option value="중창">중창</option>
+				                      <option value="월형">월형</option>
+				                      <option value="선심">선심</option>
+				                      <option value="까래">까래</option>
+				                      <option value="쿠션">쿠션</option>
+				                      <option value="갑보">갑보</option>
 			                   	  </select>
 								</div>
 						   </div>

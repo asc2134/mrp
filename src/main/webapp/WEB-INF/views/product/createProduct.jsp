@@ -9,116 +9,148 @@
 $(document).ready(function(){
 	$('.selCustom').select2();
 	
-	$("#confirm").click(function() {
+	$("#confirm").on("click",function(e) {
 		var productCost = new Object();
-		var materialList = new Object();
+		var productMaterial = new Object();
 		var leatherMaterial = new Object();
+		var accessoryMaterial = new Object();
 		var subsidiarMaterial = new Object();
-		var expense = new Object();
+		var otherMaterial = new Object();
+		var LeatherArray = new Array();
+		var subsidiarMaterialArray = new Array(); 
+		var accessoryArray = new Array();
 		var outLeatherCnt = $('#materialList').children().children("[id^='outLeather']").length;
 		var intLeatherCnt = $('#materialList').children().children("[id^='inLeather']").length;
 		
-		
-		
-		
 		for(var i=1 ; i<= outLeatherCnt; i++){
-			leatherMaterial['outLeather' + i]  = $("#outLeather" + i).val();
-			leatherMaterial['outLeatherCode' + i] = $("#outLeatherCode" + i).val();
-			leatherMaterial['outLeatherComp' + i] = $("#outLeatherComp" + i).val();
-			leatherMaterial['outLeatherRequirement' + i] = $("#outLeatherRequirement" + i).val();
-			leatherMaterial['outLeatherCost' + i] = $("#outLeatherCost" + i).val();
-			leatherMaterial['outLeatherPrice' + i] = $("#outLeatherPrice" + i).val();
+			var Leather = new Object();
+			Leather['leatherNum'] = $("#outLeatherCode" + i).val();
+			Leather['leatherComp'] = $("#outLeatherComp" + i).val();
+			Leather['consumption'] = $("#outLeatherRequirement" + i).val();
+			Leather['designNum'] = $("#designNum").val();
+			Leather['le_type'] = $("#outLeatherType" + i).val();
+			Leather['le_cost'] = $("#outLeatherCost" + i).val();
+			Leather['le_price'] = $("#outLeatherPrice" + i).val();
+			LeatherArray.push(Leather);
 		}
 		for(var i=1 ; i<= intLeatherCnt; i++){
-			leatherMaterial['inLeather' + i]  = $("#inLeather" + i).val();
-			leatherMaterial['inLeatherCode' + i] = $("#inLeatherCode" + i).val();
-			leatherMaterial['inLeatherComp' + i] = $("#inLeatherComp" + i).val();
-			leatherMaterial['inLeatherRequirement' + i] = $("#inLeatherRequirement" + i).val();
-			leatherMaterial['inLeatherCost' + i] = $("#inLeatherCost" + i).val();
-			leatherMaterial['inLeatherPrice' + i] = $("#inLeatherPrice" + i).val();
+			var Leather = new Object();
+			Leather['leatherNum'] = $("#inLeatherCode" + i).val();
+			Leather['leatherComp'] = $("#inLeatherComp" + i).val();
+			Leather['consumption'] = $("#inLeatherRequirement" + i).val();
+			Leather['designNum'] = $("#designNum").val();
+			Leather['le_type'] = $("#inLeatherType" + i).val();
+			Leather['le_cost'] = $("#inLeatherCost" + i).val();
+			Leather['le_price'] = $("#inLeatherPrice" + i).val();
+			LeatherArray.push(Leather);
 		}
-		
-		materialList.supplier = $("#supplier").val();
-		materialList.designNum = $("#designNum").val();
-		materialList.leather = $("#leather").val();
-		materialList.gender = $("#gender").val();
-		materialList.upload_file = $("#upload_file").val();
-		materialList.costSum = $("#costSum").val();
-		materialList.percentMargin = $("#percentMargin").val();
-		materialList.margin = $("#margin").val();
-		materialList.allSum = $("#allSum").val();
-		
-		subsidiarMaterial.soleCode = $("#soleCode").val();
-		subsidiarMaterial.soleComp = $("#soleComp").val();
-		subsidiarMaterial.solePrice = $("#solePrice").val();
-		subsidiarMaterial.soleProCode = $("#soleProCode").val();
-		subsidiarMaterial.soleProComp = $("#soleProComp").val();
-		subsidiarMaterial.soleProPrice = $("#soleProPrice").val();
-		subsidiarMaterial.heelCode = $("#heelCode").val();
-		subsidiarMaterial.heelComp = $("#heelComp").val();
-		subsidiarMaterial.heelPrice = $("#heelPrice").val();
-		subsidiarMaterial.midSoleCode = $("#midSoleCode").val();
-		subsidiarMaterial.midSoleComp = $("#midSoleComp").val();
-		subsidiarMaterial.midSolePrice = $("#midSolePrice").val();
-		subsidiarMaterial.counterCode = $("#counterCode").val();
-		subsidiarMaterial.counterComp = $("#counterComp").val();
-		subsidiarMaterial.counterPrice = $("#counterPrice").val();
-		subsidiarMaterial.insoleCode = $("#insoleCode").val();
-		subsidiarMaterial.insoleComp = $("#insoleComp").val();
-		subsidiarMaterial.insolePrice = $("#insolePrice").val();
-		subsidiarMaterial.sockLiningCode = $("#sockLiningCode").val();
-		subsidiarMaterial.sockLiningComp = $("#sockLiningComp").val();
-		subsidiarMaterial.sockLiningPrice = $("#sockLiningPrice").val();
-		subsidiarMaterial.cushionCode = $("#cushionCode").val();
-		subsidiarMaterial.cushionComp = $("#cushionComp").val();
-		subsidiarMaterial.cushionPrice = $("#cushionPrice").val();
-		subsidiarMaterial.sockLiningPrice = $("#sockLiningPrice").val();
-		subsidiarMaterial.heelPadCode = $("#heelPadCode").val();
-		subsidiarMaterial.heelPadComp = $("#heelPadComp").val();
-		subsidiarMaterial.heelPadPrice = $("#heelPadPrice").val();
-		subsidiarMaterial.otherPrice = $("#otherPrice").val();
-		subsidiarMaterial.decoCode1 = $("#decoCode1").val();
-		subsidiarMaterial.decoComp1 = $("#decoComp1").val();
-		subsidiarMaterial.decoRequirement1 = $("#decoRequirement1").val();
-		subsidiarMaterial.decoCost1 = $("#decoCost1").val();
-		subsidiarMaterial.decoPrice1 = $("#decoPrice1").val();
-		subsidiarMaterial.decoCode2 = $("#decoCode2").val();
-		subsidiarMaterial.decoComp2 = $("#decoComp2").val();
-		subsidiarMaterial.decoRequirement2 = $("#decoRequirement2").val();
-		subsidiarMaterial.decoCost2 = $("#decoCost2").val();
-		subsidiarMaterial.decoPrice2 = $("#decoPrice2").val();
-		subsidiarMaterial.decoCode3 = $("#decoCode3").val();
-		subsidiarMaterial.decoComp3 = $("#decoComp3").val();
-		subsidiarMaterial.decoRequirement3 = $("#decoRequirement3").val();
-		subsidiarMaterial.decoCost3 = $("#decoCost3").val();
-		subsidiarMaterial.decoPrice3 = $("#decoPrice3").val();
-		subsidiarMaterial.decoCode4 = $("#decoCode4").val();
-		subsidiarMaterial.decoComp4 = $("#decoComp4").val();
-		subsidiarMaterial.decoRequirement4 = $("#decoRequirement4").val();
-		subsidiarMaterial.decoCost4 = $("#decoCost4").val();
-		subsidiarMaterial.decoPrice4 = $("#decoPrice4").val();
-		subsidiarMaterial.decoCode5 = $("#decoCode5").val();
-		subsidiarMaterial.decoComp5 = $("#decoComp5").val();
-		subsidiarMaterial.decoRequirement5 = $("#decoRequirement5").val();
-		subsidiarMaterial.decoCost5 = $("#decoCost5").val();
-		subsidiarMaterial.decoPrice5 = $("#decoPrice5").val();
+		leatherMaterial.LeatherArray  = LeatherArray;
 		
 		
-		expense.upperEP = $("#upperEP").val();
-		expense.shoesEP = $("#shoesEP").val();
-		expense.EPSum = $("#EPSum").val();
-		expense.administrativeExpense = $("#administrativeExpense").val();
-		expense.factoryExpense = $("#factoryExpense").val();
-		expense.expenseSum = $("#expenseSum").val();
+		if(validation("supplier")){	productMaterial.supplier = $("#supplier").val(); }else{ return false };
+		if(validation("designNum")){	productMaterial.designNum = $("#designNum").val(); }else{ return false };
+		if(validation("gender")){	productMaterial.gender = $('input[name="gender"]:checked').val();    }else{ return false };
+		if(validation("percentMargin")){	productMaterial.percentMargin = $("#percentMargin").val(); }else{ return false };
+		if(validation("upperEP")){	productMaterial.upperEP = $("#upperEP").val(); }else{ return false };
+		if(validation("shoesEP")){	productMaterial.shoesEP = $("#shoesEP").val(); }else{ return false };
+		if(validation("administrativeExpense")){	productMaterial.administrativeExpense = $("#administrativeExpense").val(); }else{ return false };
+		if(validation("indirectEmploymentExpense")){	productMaterial.indirectEmploymentExpense = $("#indirectEmploymentExpense").val(); }else{ return false };
+		if(validation("factoryExpense")){	productMaterial.factoryExpense = $("#factoryExpense").val(); }else{ return false };
+		
+		productMaterial.leatherMaterialSum = $("#leatherMaterialSum").val();
+		productMaterial.subsidiarySum = $("#subsidiarySum").val();
+		productMaterial.expenseSum = $("#expenseSum").val();
+		productMaterial.costSum = $("#costSum").val();
+		productMaterial.EPSum = $("#EPSum").val();
+		productMaterial.expenseSum = $("#expenseSum").val();
+		productMaterial.leather = $("#leather").val();
+		productMaterial.costSum = $("#costSum").val();
+		productMaterial.margin = $("#margin").val();
+		productMaterial.allSum = $("#allSum").val();
 		
 		
 		
-		productCost.materialList = materialList;
+		subsidiarMaterialArray = [
+			{
+				subsidiaryNum : $("#soleCode").val(),
+				designNum : $("#designNum").val(),
+				sub_price : $("#solePrice").val()
+			   
+			},
+			{
+				subsidiaryNum : $("#soleProCode").val(),
+				designNum : $("#designNum").val(),
+				sub_price : $("#soleProPrice").val()
+			   
+			},
+			{
+				subsidiaryNum : $("#heelCode").val(),
+				designNum : $("#designNum").val(),
+				sub_price : $("#heelPrice").val()
+			   
+			},
+			{
+				subsidiaryNum : $("#midSoleCode").val(),
+				designNum : $("#designNum").val(),
+				sub_price : $("#midSolePrice").val()
+			   
+			},
+			{
+				subsidiaryNum : $("#counterCode").val(),
+				designNum : $("#designNum").val(),
+				sub_price : $("#counterPrice").val()
+			   
+			},
+			{
+				subsidiaryNum : $("#insoleCode").val(),
+				designNum : $("#designNum").val(),
+				sub_price : $("#insolePrice").val()
+			   
+			},
+			{
+				subsidiaryNum : $("#sockLiningCode").val(),
+				designNum : $("#designNum").val(),
+				sub_price : $("#sockLiningPrice").val()
+			   
+			},
+			{
+				subsidiaryNum : $("#cushionCode").val(),
+				designNum : $("#designNum").val(),
+				sub_price : $("#cushionPrice").val()
+			   
+			},
+			{
+				subsidiaryNum : $("#heelPadCode").val(),
+				designNum : $("#designNum").val(),
+				sub_price : $("#heelPadPrice").val()
+			   
+			}
+		] 
+		subsidiarMaterial.subsidiarMaterialArray = subsidiarMaterialArray;
+		
+		otherMaterial.materialOtherNum = $("#otherMaterialCode").val(),
+		otherMaterial.designNum = $("#designNum").val(),
+		otherMaterial.ot_price = $("#otherPrice").val();
+		
+		
+		
+		for(var i=1; i<6; i++){
+			var accessoryTemp = new Object();
+			accessoryTemp['accessorynum'] = $("#decoCode" + i).val();
+			accessoryTemp['decoComp'] = $("#decoComp" + i).val();
+			accessoryTemp['consumption'] = $("#decoRequirement" + i).val();
+			accessoryTemp['ac_cost'] = $("#decoCost" + i).val();
+			accessoryTemp['ac_price'] = $("#decoPrice" + i).val();
+			accessoryTemp['designNum'] = $("#designNum").val();
+			accessoryArray.push(accessoryTemp);
+		}
+		accessoryMaterial.accessoryArray = accessoryArray;
+		
+		productCost.productMaterial = productMaterial;
 		productCost.leatherMaterial = leatherMaterial;
 		productCost.subsidiarMaterial = subsidiarMaterial;
-		productCost.expense = expense;
-		
-		
+		productCost.accessoryMaterial = accessoryMaterial;
+		productCost.otherMaterial = otherMaterial;
 		
 		$.ajax({
 				type : "POST",
@@ -127,11 +159,28 @@ $(document).ready(function(){
 				dataType: "json",
 				contentType:"application/json;charset=UTF-8",
 				success : function(data){
-					if(data){
-						location.href="costingMain.do"
-					}else{
-						alert('등록이 실패하였습니다.');
-					}
+			        
+					var form = $('#fileForm')[0];
+			        var data = new FormData(form);
+			        data.append("designNum", $("#designNum").val());
+			        $.ajax({
+			            type: "POST",
+			            enctype: 'multipart/form-data',
+			            url: "/fileUpload.do",
+			            data: data,
+			            processData: false,
+			            contentType: false,
+			            cache: false,
+			            timeout: 600000,
+			            success: function (data) {
+			            	location.href="costingMain.do";
+			            },
+			            error: function (e) {
+			                console.log("ERROR : ", e);
+			                alert("fail");
+			            }
+			        });
+			        
 				},
 				error:function(request,status,error){
 			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -140,6 +189,18 @@ $(document).ready(function(){
 			});
 		
 	}); 
+	
+	function validation(data) { 
+		if( $("#" + data).val() == "" ) {
+				alert("무조건 입력해야하는 값입니다.");
+				 $("#" + data).focus();
+				return false;
+				
+		} else {
+			return true;
+		}
+	};
+
 });
 
 
@@ -161,8 +222,14 @@ function autoCal(){
 		sum = sum + temp
 	}
 	
+	for(var i=1; i<=5; i++){
+		var temp = Number($("#decoRequirement" + i).val() *  $("#decoCost" + i).val());
+		$("#decoPrice" + i).val(temp.toFixed());
+	}
+	
 	
 	$('#leatherMaterialSum').val(sum.toFixed());
+	$('#otherPrice').val($('#otherCost').val());
 	
 	//$('#leatherMaterialSum').val(Number($('#outLeatherSum1').val())  +  Number($('#outLeatherSum2').val()) + Number($('#outLeatherSum3').val()) + Number($('#inLeatherSum').val()));
 	$('#subsidiarySum').val(Number($('#solePrice').val())  +  Number($('#soleProPrice').val()) + Number($('#heelPrice').val()) + Number($('#midSolePrice').val()) + Number($('#counterPrice').val()) + Number($('#insolePrice').val()) + Number($('#sockLiningPrice').val())+ Number($('#cushionPrice').val())+ Number($('#heelPadPrice').val())+ Number($('#otherPrice').val())+ Number($('#decoPrice1').val())+ Number($('#decoPrice2').val())+ Number($('#decoPrice3').val())+ Number($('#decoPrice4').val())+ Number($('#decoPrice5').val()));
@@ -243,7 +310,8 @@ function addLeather(data){
 
 		addNode = "<tr>";
 		addNode += "<td id=	'outLeather" + Number(outLeatherCnt + 1 )  + "'>외피 "+ Number(outLeatherCnt + 1 ) + "</td>";
-		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'outLeatherCode"+Number(outLeatherCnt + 1 )+"' ><option></option>"+outNode+"</select></td>";
+		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'outLeatherCode"+Number(outLeatherCnt + 1 )+"' ><option></option>"+outNode+"</select><input type='hidden' value='외피' id='outLeatherType"+ Number(outLeatherCnt + 1 ) +"'/></td>";
+		
 		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'outLeatherComp"+Number(outLeatherCnt + 1 )+"' ><option></option>"+cNode+"</select></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='outLeatherRequirement"+Number(outLeatherCnt + 1 )+"'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='outLeatherCost"+Number(outLeatherCnt + 1 )+"'></td>";
@@ -258,7 +326,7 @@ function addLeather(data){
 
 		addNode = "<tr>";
 		addNode += "<td id=	'inLeather" + Number(intLeatherCnt + 1 )  + "'>내피 "+ Number(intLeatherCnt + 1 ) + "</td>";
-		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'inLeatherCode"+Number(intLeatherCnt + 1 )+"' ><option></option>"+inNode+"</select></td>";
+		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'inLeatherCode"+Number(intLeatherCnt + 1 )+"' ><option></option>"+inNode+"</select><input type='hidden' value='내피' id='inLeatherType"+ Number(intLeatherCnt + 1 ) +"'/></td>";
 		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'inLeatherComp"+Number(intLeatherCnt + 1 )+"' ><option></option>"+cNode+"</select></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='inLeatherRequirement"+ Number(intLeatherCnt + 1 ) + "'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='inLeatherCost"+ Number(intLeatherCnt + 1 ) + "'></td>";
@@ -316,7 +384,7 @@ $(function() {
         }
     }
 });
-
+function stopDefaultAction(e) { e.preventDefault()};
 </script>
 <style type="text/css">
 .select2-selection__rendered {
@@ -330,7 +398,6 @@ $(function() {
     height: 34px !important;
 }
 </style>
-<form>
 <section id="container" class="home-page">
 	<div class="wrap-container clearfix">
 		<div id="main-content">
@@ -353,16 +420,6 @@ $(function() {
 							      </td>
 							    </tr>
 							    <tr>
-							      <th scope="row">소재</th>
-							      <td>
-							      	<option></option>
-							      	<select class="form-control selCustom" style="width: 100%;" >
-							      		<option></option>
-							      	</select>
-			
-							      </td>
-							    </tr>
-							    <tr>
 							      <th scope="row">남/여</th>
 							      <td>
 							      	<span>남</span><input type="radio" name="gender" value="M" style="margin-right: 10px">
@@ -371,14 +428,17 @@ $(function() {
 							    </tr>
 							    <tr>
 							      <td colspan="2">
-								    <input type="file" class="form-control-file" id="upload_file" name="upload_file" aria-describedby="fileHelp" accept="image/*">
-								    <small id="fileHelp" class="form-text text-muted">사진파일만 등록가능</small>
+								    <form name="fileForm" id="fileForm" action="" enctype="multipart/form-data">
+								    	<input type="file" name="file" class="form-control-file" id="upload_file" name="upload_file" aria-describedby="fileHelp" accept="image/*" >
+								    	<input type="hidden" name="src" id="src">
+								    	<small id="fileHelp" class="form-text text-muted">사진파일만 등록가능</small>	
+								    </form>
 							      </td>
 							    </tr>
 							  </tbody>
 							</table>
 							<div style=" width: 300px; height:300px; margin-left:315px;">
-								<img id="blah"  src="" style="height: 300px; width: 300px" />
+								<img id="blah"  src="" style="height: 250px; width: 300px" />
 							</div> 
 							
 							<div style=" width: 100%;">
@@ -402,7 +462,7 @@ $(function() {
 							    <tr>
 							      <th id="leatherMaterial" scope="row" rowspan="4">원자재</th>
 							      <td id="outLeather1">외피 1</td>
-							      <td>
+							      <td style="width: 200px;">
 							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherCode1" >
 							      		<option></option>
 							      		<c:forEach var="allLeatherList" items="${allLeatherList}">
@@ -411,11 +471,11 @@ $(function() {
 											</c:if>								    			
 										</c:forEach>
 							      	</select>
+									<input type="hidden" value="외피" id="outLeatherType1"/>
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherComp1">
 							      		<option></option>
-							      		
 										<c:forEach var="allCompanyList" items="${allCompanyList}"> 
 								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
 										</c:forEach>
@@ -438,6 +498,7 @@ $(function() {
 											</c:if>	
 										</c:forEach>
 							      	</select>
+							      	<input type="hidden" value="외피" id="outLeatherType2"/>
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherComp2" >
@@ -464,6 +525,7 @@ $(function() {
 											</c:if>	
 										</c:forEach>
 							      	</select>
+							      	<input type="hidden" value="외피" id="outLeatherType3"/>
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherComp3">
@@ -490,6 +552,7 @@ $(function() {
 											</c:if>	
 										</c:forEach>
 							      	</select>
+							      	<input type="hidden" value="내피" id="inLeatherType1"/>
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="inLeatherComp1">
@@ -522,6 +585,7 @@ $(function() {
 											</c:if>
 										</c:forEach>
 							      	</select>
+							      	
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="soleComp">
@@ -537,7 +601,18 @@ $(function() {
 							    </tr>
 							    <tr>
 							      <td>창가공</td>
-							      <td><input class="form-control form-control-sm" type="text" id="soleProCode"></td>
+							      <td>
+							      	<!-- <input class="form-control form-control-sm" type="text" id="soleProCode"> -->
+							      	<select class="form-control form-control-sm selCustom" style="width: 100%;" id="soleProCode">
+							      		<option></option>
+							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
+								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '창가공'}">
+											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
+											</c:if>
+										</c:forEach>
+							      	</select>
+							      
+							      </td>
 							      <!-- <td><input class="form-control form-control-sm" type="text" id="soleProComp"></td> -->
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="soleProComp">
@@ -546,6 +621,7 @@ $(function() {
 								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
 										</c:forEach>
 							      	</select>
+							      	
 							      </td>
 							      <td></td>
 							      <td></td>
@@ -564,6 +640,7 @@ $(function() {
 											</c:if>
 										</c:forEach>
 							      	</select>
+							      	
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="heelComp">
@@ -590,6 +667,7 @@ $(function() {
 											</c:if>
 										</c:forEach>
 							      	</select>
+							      	
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="midSoleComp" >
@@ -616,6 +694,7 @@ $(function() {
 											</c:if>
 										</c:forEach>
 							      	</select>
+							      	
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="counterComp">
@@ -642,6 +721,7 @@ $(function() {
 											</c:if>
 										</c:forEach>
 							      	</select>
+							      	
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="insoleComp">
@@ -668,6 +748,7 @@ $(function() {
 											</c:if>
 										</c:forEach>
 							      	</select>
+							      	
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="sockLiningComp" >
@@ -694,6 +775,7 @@ $(function() {
 											</c:if>
 										</c:forEach>
 							      	</select>
+							      	
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="cushionComp">
@@ -736,7 +818,7 @@ $(function() {
 							    <tr>
 							      <td>기타소모재</td>
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" >
+							      	<select class="form-control selCustom" style="width: 100%;" id="otherMaterialCode">
 							      		<option></option>
 										<c:forEach var="allMaterialOtherList" items="${allMaterialOtherList}"> 
 								    		<option value="${allMaterialOtherList.materialothernum}">${allMaterialOtherList.materialothername}</option>
@@ -744,7 +826,7 @@ $(function() {
 							      	</select>
 							      </td>
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" >
+							      	<select class="form-control selCustom" style="width: 100%;" id="otherMaterialComp">
 							      		<option></option>
 							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
 								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
@@ -752,8 +834,8 @@ $(function() {
 							      	</select>
 							      </td>
 							      <td></td>
-							      <td></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="otherPrice"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" onkeyup="autoCal();" id="otherCost"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" onkeyup="autoCal();" id="otherPrice" readonly="readonly"></td>
 							    </tr>
 							    <tr>
 							      <td>장식</td>
@@ -775,16 +857,16 @@ $(function() {
 										</c:forEach>
 							      	</select>
 							      </td>
-							      <td><input class="form-control form-control-sm" type="number" id="decoRequirement1"></td>
-							      <td><input class="form-control form-control-sm" type="number" id="decoCost1"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice1"></td>
+							      <td><input class="form-control form-control-sm" type="number" id="decoRequirement1" onkeyup="autoCal();"></td>
+							      <td><input class="form-control form-control-sm" type="number" id="decoCost1" onkeyup="autoCal();"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice1" readonly="readonly"></td>
 							    </tr>
 							    <tr>
 							      <td></td>
 							      <!-- <td><input class="form-control form-control-sm" type="text" id="decoCode2"></td>
 							      <td><input class="form-control form-control-sm" type="text" id="decoComp2"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" >
+							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode2">
 							      		<option></option>
 							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
 								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
@@ -799,9 +881,9 @@ $(function() {
 										</c:forEach>
 							      	</select>
 							      </td>
-							      <td><input class="form-control form-control-sm" type="number" id="decoRequirement2"></td>
-							      <td><input class="form-control form-control-sm" type="number" id="decoCost2"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice2"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoRequirement2"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoCost2"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice2" readonly="readonly"></td>
 							    </tr>
 							    <tr>
 							      <td></td>
@@ -823,9 +905,9 @@ $(function() {
 										</c:forEach>
 							      	</select>
 							      </td>
-							      <td><input class="form-control form-control-sm" type="number" id="decoRequirement3"></td>
-							      <td><input class="form-control form-control-sm" type="number" id="decoCost3"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice3"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoRequirement3"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoCost3"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice3" readonly="readonly"></td>
 							    </tr>
 							    <tr>
 							      <td></td>
@@ -847,9 +929,9 @@ $(function() {
 										</c:forEach>
 							      	</select>
 							      </td>
-							      <td><input class="form-control form-control-sm" type="number" id="decoRequirement4"></td>
-							      <td><input class="form-control form-control-sm" type="number" id="decoCost4"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice4"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoRequirement4"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoCost4"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice4" readonly="readonly"></td>
 							    </tr>
 							    <tr>
 							      <td></td>
@@ -871,9 +953,9 @@ $(function() {
 										</c:forEach>
 							      	</select>
 							      </td>
-							      <td><input class="form-control form-control-sm" type="number" id="decoRequirement5"></td>
-							      <td><input class="form-control form-control-sm" type="number" id="decoCost5"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice5"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoRequirement5"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoCost5"></td>
+							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice5" readonly="readonly"></td>
 							    </tr>
 							    <tr>
 							      <td><2></td>
@@ -950,5 +1032,5 @@ $(function() {
 			</section>
 		</div>
 	</div>
+	<input type="hidden" id="real_path" name="real_path" >
 </section>
-</form>

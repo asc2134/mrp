@@ -3,5 +3,8 @@
 3. 자바파일수정시 서버자동 재연결(서버자동껏다 켜짐)
 4. 로그인 인터셉터
 5. 타일즈(VIEW) 
-6  파일업로드 https://kyuhyuk.kr/article/spring-boot/2020/07/22/Spring-Boot-JPA-MySQL-Board-Post-File-Upload-Download
+6  파일업로드 
 7. 스프링부트(메이븐) 그레들을 사용하지 않은 이유는 초반에 설정이 잘안되서 귀찮아서 메이븐으로 해결함 (기존에 했던 업무들이 다 메이븐이라 익숙하기도했음)
+8. 사진첨부 파일은  multipart로 무조건해야됨.. 
+
+

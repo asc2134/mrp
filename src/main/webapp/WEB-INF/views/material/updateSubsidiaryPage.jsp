@@ -85,6 +85,7 @@ $( document ).ready( function() {
 									  <label class="col-form-label col-form-label-lg" for="inputLarge">타입</label>
 									  <select class="form-control" id="subsidiaryType" name="subsidiaryType">
 					                      <option value="창">창</option>
+					                      <option value="창가공">창가공</option>
 					                      <option value="굽">굽</option>
 					                      <option value="중창">중창</option>
 					                      <option value="월형">월형</option>
