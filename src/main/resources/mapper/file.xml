@@ -3,8 +3,11 @@
 						"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="file">
-	
 	<insert id="registFile" parameterType="com.mrp.company.dto.FileDto">
-		INSERT INTO mrp.file("fileNum", "fileName", "fileOriName", "designNum") VALUES (nextval('seq_fileNum'), #{fileName}, #{fileOriName}, #{designNum} ::integer);
+		INSERT INTO mrp.file("fileNum", "fileName", "fileUrl", "fileOriName", "designNum") VALUES (nextval('seq_fileNum'), #{fileName}, #{fileUrl}, #{fileOriName}, #{designNum} ::integer)
 	</insert>
+	<select id="getImgFile" resultType="com.mrp.company.dto.FileDto" parameterType="String">
+		select * from mrp.file where "designNum" = #{designNum} ::integer
+	</select>
+	
 </mapper>

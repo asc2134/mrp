@@ -16,8 +16,7 @@ import com.mrp.company.dto.FileDto;
 public class FileController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
-	@Value("${file.upload-dir}")
-	private String uploadDir;
+	private String uploadDir= "/static/image/";
 	
 	@Autowired
 	private FileDao fileDao;
@@ -33,7 +32,7 @@ public class FileController {
 			String fileName = dto.getFileOriName();
 			String ext = fileName.substring(fileName.lastIndexOf("."));
 			
-			
+			dto.setFileUrl(uploadDir + dto.getFileName() + ext);
 			if(!folder.exists()) {//폴더있는지 확인
 				folder.mkdir();
 				dto.getFile().transferTo(new File(uploadDir + dto.getFileName() + ext)); // 파일 업로드 작업 수행
@@ -45,7 +44,7 @@ public class FileController {
 			
 		}
 		
-		return "cost/costingMain";
+		return "product/productListMain";
 		
 	}
 	

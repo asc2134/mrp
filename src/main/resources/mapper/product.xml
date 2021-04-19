@@ -21,5 +21,53 @@
 	
 	<insert id="registSubsidiarMaterial">
 		INSERT INTO mrp.pro_subsidiary( "pro_subNum", "designNum", sub_price, "subsidiaryNum") VALUES (nextval('seq_pro_subsidiary'), #{designNum} ::integer, #{sub_price} ::integer, #{subsidiaryNum} ::integer);
-	</insert>	
+	</insert>
+	<select id="getProductList" resultType="Map">
+		select * from mrp.product
+	</select>
+	<select id="getProductCount" resultType="Integer">
+		SELECT COUNT(*) FROM mrp.product
+	</select>
+	<select id="getProduct" resultType="Map" parameterType="String">
+		select * from mrp.product where "designNum" = #{designNum} ::integer
+	</select>
+	
+	<select id="getpLeather" resultType="Map" parameterType="String">
+		select * from mrp.pro_leather as pro, mrp.leather as le
+			where pro."leatherNum" = le.leathernum 
+				and pro."designNum" = #{designNum} ::integer
+	</select>
+	
+	<select id="getpAccessory" resultType="Map" parameterType="String">
+		select * from mrp.pro_accessory as pro, mrp.accessory as acc
+			 where pro.accessorynum = acc.accessorynum 
+			  and  pro."designNum" = #{designNum} ::integer
+	</select>
+	
+	<select id="getpMaterialOther" resultType="Map" parameterType="String">
+		select * from mrp.pro_materialother where "designNum" = #{designNum} ::integer
+	</select>
+	
+	<select id="getpSubsidiary" resultType="Map" parameterType="String">
+		select * from
+			(select * from mrp.pro_subsidiary as pro, mrp.subsidiary as sub
+				where pro."subsidiaryNum" =sub.subsidiarynum) as subs where subs."designNum" = #{designNum} ::integer
+	</select>
+	
+	<select id="getLeatherPrice" resultType="String" parameterType="Map">
+		select price from mrp.leather where leathernum = #{num} ::integer;		
+	</select>
+	
+	<select id="getSubsidiaryPrice" resultType="String" parameterType="Map">
+		select price from mrp.subsidiary where subsidiarynum = #{num} ::integer
+	</select>
+	
+	<select id="getAccessoryPrice" resultType="String" parameterType="Map">
+		select price from mrp.accessory where accessorynum =  #{num} ::integer;
+	</select>
+
+	<select id="getMaterialOtherPrice" resultType="String" parameterType="Map">
+		select price from mrp.materialother where materialothernum = #{num} ::integer;	
+	</select>
+	
 </mapper>

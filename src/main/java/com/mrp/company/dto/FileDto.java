@@ -6,9 +6,18 @@ public class FileDto {
 	int fileNum;
 	String fileName;
 	String fileOriName;
+	String fileUrl;
 	int designNum;
 	MultipartFile file;
 	
+	
+	
+	public String getFileUrl() {
+		return fileUrl;
+	}
+	public void setFileUrl(String fileUrl) {
+		this.fileUrl = fileUrl;
+	}
 	public MultipartFile getFile() {
 		return file;
 	}

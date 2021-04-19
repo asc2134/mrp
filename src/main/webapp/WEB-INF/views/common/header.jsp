@@ -12,7 +12,7 @@
 				   <li><a href="/materialMain.do">자재</a></li>
 				   <li><a href="/login/login">업무</a></li>
 				   <li><a href="#">발주</a></li>
-				   <li><a href="/costingMain.do">원가계산서</a></li>
+				   <li><a href="/productListMain.do">원가계산서</a></li>
 				</ul>
 			</div>
 			<a href='/loginOk.do' class="logo"><p>Ys MRP</p></a>

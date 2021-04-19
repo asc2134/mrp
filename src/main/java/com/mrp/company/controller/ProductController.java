@@ -23,6 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mrp.company.dao.CompanyDao;
 import com.mrp.company.dao.MaterialDao;
 import com.mrp.company.dao.ProductDao;
+import com.mrp.company.dto.FileDto;
+import com.mrp.company.dto.PagingDto;
+import com.mrp.company.dao.FileDao;
+
 
 @Controller
 public class ProductController {
@@ -36,6 +40,11 @@ public class ProductController {
 	
 	@Autowired
 	private MaterialDao materialDao;
+	
+	@Autowired
+	private FileDao fileDao;
+	
+	
 	
 	
 	@RequestMapping("/createProduct.do")
@@ -95,6 +104,94 @@ public class ProductController {
 			result =resultInt > 0  ? true: false;
 		}
 		return result;
+	}
+	
+	@RequestMapping("/productListMain.do")
+	private String productListMain(HttpServletRequest req
+			 	,@RequestParam(required=false, defaultValue = "1")String productNowPage
+				, @RequestParam(required=false, defaultValue= "10")String productCntPerPage ) throws Exception {
+	
+		//페이징관련변수  
+		List<HashMap<String,String>> productList = productDao.getProductList();
+		int productCount = productDao.getProductCount();
+		PagingDto productDto = new PagingDto(productCount, Integer.parseInt(productNowPage), Integer.parseInt(productCntPerPage));
+
+		
+		req.setAttribute("productList", productList);
+		req.setAttribute("productDto", productDto);
+		return "product/productListMain";
+	}
+	
+
+	@RequestMapping("/showProduct.do")
+	private String showProduct(HttpServletRequest req) throws Exception {
+		List<HashMap<String, String>> pro_leather_out = new ArrayList<>();
+		List<HashMap<String, String>> pro_leather_in = new ArrayList<>();
+		
+		String designNum = req.getParameter("designNum");
+		HashMap<String,String> product = productDao.getProduct(designNum);
+		List<HashMap<String, String>> pro_leather = productDao.getpLeather(designNum);
+		List<HashMap<String, String>> pro_accessory = productDao.getpAccessory(designNum);
+		List<HashMap<String, String>> pro_materialOther = productDao.getpMaterialOther(designNum);
+		List<HashMap<String, String>> pro_subsidiary = productDao.getpSubsidiary(designNum);
+		List<Map<String, String>> allCompanyList = companyDao.getAllCompanyList();
+		List<Map<String, String>> allLeatherList = materialDao.getAllLeatherList();
+		List<Map<String, String>> allSubsidiaryList = materialDao.getAllSubsidiaryList();
+		List<Map<String, String>> allAccessoryList = materialDao.getAllAccessoryList();
+		List<Map<String, String>> allMaterialOtherList = materialDao.getAllMaterialOtherList();
+		FileDto fileDto = fileDao.getImgFile(designNum);
+		
+		
+		for(int i=0; i<pro_leather.size(); i++) {
+			if(pro_leather.get(i).get("le_type").equals("외피")) {
+				pro_leather_out.add(pro_leather.get(i));
+				
+			}else {
+				pro_leather_in.add(pro_leather.get(i));
+			}
+			
+		}
+		
+		
+		req.setAttribute("fileDto", fileDto);
+		req.setAttribute("allCompanyList", allCompanyList);
+		req.setAttribute("allLeatherList", allLeatherList);
+		req.setAttribute("allSubsidiaryList", allSubsidiaryList);
+		req.setAttribute("allAccessoryList", allAccessoryList);
+		req.setAttribute("allMaterialOtherList", allMaterialOtherList);
+		req.setAttribute("product", product);
+		req.setAttribute("pro_leather", pro_leather);
+		req.setAttribute("pro_accessory", pro_accessory);
+		req.setAttribute("pro_materialOther", pro_materialOther);
+		req.setAttribute("pro_subsidiary", pro_subsidiary);
+		req.setAttribute("pro_leather_out", pro_leather_out);
+		req.setAttribute("pro_leather_in", pro_leather_in);
+		req.setAttribute("leather_size", pro_leather.size());
+		return "product/showProduct";
+	}
+
+	@RequestMapping("/getPrice.do")
+	public @ResponseBody  Map<Object, Object> getPrice(@RequestBody HashMap<String, String> map, HttpServletRequest req) throws Exception {
+		Map<Object, Object> temp= new HashMap<>(); ;
+		String price;
+		
+		if(!map.get("num").isEmpty()) {
+			if(map.get("type").equals("leather")) {
+				price = productDao.getLeatherPrice(map);
+			}else if(map.get("type").equals("subsidiary")) {
+				price = productDao.getSubsidiaryPrice(map);
+			}else if(map.get("type").equals("accessory")) {
+				price = productDao.getAccessoryPrice(map);
+			}else {
+				price = productDao.getMaterialOtherPrice(map);
+			}
+		}else {
+			price = "0";
+			
+		}
+		temp.put("price", price);
+		temp.put("result", map.get("result"));
+		return temp;
 	}
 	
 }

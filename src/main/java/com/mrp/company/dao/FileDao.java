@@ -12,12 +12,12 @@ public class FileDao {
 	private SqlSessionTemplate sql;
 
 	public int registFile(FileDto dto) {
-		
 		return sql.insert("file.registFile",dto);
 	}
-	
-	
-	
+
+	public FileDto getImgFile(String designNum) {
+		return sql.selectOne("file.getImgFile", designNum);
+	}
 }
 
 	

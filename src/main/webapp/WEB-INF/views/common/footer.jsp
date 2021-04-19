@@ -6,6 +6,7 @@
 			<div class="col-1-4 col-footer-1">
 				<div class="wrap-col">
 					<h3>About Us</h3>
+					<span><i class="fa fa-envelope"></i> DaYoung Lee Company</span>
 				</div>
 			</div>
 			<div class="col-1-4 col-footer-2">
