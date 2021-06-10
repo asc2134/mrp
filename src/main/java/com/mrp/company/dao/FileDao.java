@@ -18,6 +18,10 @@ public class FileDao {
 	public FileDto getImgFile(String designNum) {
 		return sql.selectOne("file.getImgFile", designNum);
 	}
+
+	public int deleterFile(String designNum) {
+		return sql.delete("file.deleteFile",designNum);
+	}
 }
 
 	

@@ -257,7 +257,7 @@ function changeMenu(obj){
 									</c:forEach>
 								</c:if>
 								<c:if test="${empty leatherList}">
-									<tr class="trLeather"  style="display: none;">
+									<tr class="trLeather"  style="">
 										<td class="notData" colspan="5">데이터가 없습니다.</td>
 									</tr>
 								</c:if>

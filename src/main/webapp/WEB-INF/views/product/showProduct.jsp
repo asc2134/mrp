@@ -9,61 +9,71 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$("input:radio[name='gender']:input[value='${product.gender}']").attr("checked", true); //체크 초기값
-	
-	
+	/* 파일 */
 	$("#blah").attr("src","${fileDto.fileUrl}");
 	
+	/* 기타 */
 	
+	/* 부자재  */
 	<c:forEach var="pro_subsidiary" items="${pro_subsidiary}">
 		<c:if test="${pro_subsidiary.subsidiarytype eq '창'}">
 			$('#soleCode').val("${pro_subsidiary.subsidiarynum}");
+			$('#soleCode').attr("pk","${pro_subsidiary.pro_subNum}");
 			$('#soleComp').val("${pro_subsidiary.compnum}");
 			$('#solePrice').val("${pro_subsidiary.sub_price}");
 		</c:if>
 		
 		<c:if test="${pro_subsidiary.subsidiarytype eq '창가공'}">
 			$('#soleProCode').val("${pro_subsidiary.subsidiarynum}");
+			$('#soleProCode').attr("pk","${pro_subsidiary.pro_subNum}");
 			$('#soleProComp').val("${pro_subsidiary.compnum}");
 			$('#soleProPrice').val("${pro_subsidiary.sub_price}");
 		</c:if>
 		
 		<c:if test="${pro_subsidiary.subsidiarytype eq '굽'}">
 			$('#heelCode').val("${pro_subsidiary.subsidiarynum}");
+			$('#heelCode').attr("pk","${pro_subsidiary.pro_subNum}");
 			$('#heelComp').val("${pro_subsidiary.compnum}");
 			$('#heelPrice').val("${pro_subsidiary.sub_price}");
 		</c:if>
 		
 		<c:if test="${pro_subsidiary.subsidiarytype eq '중창'}">
 			$('#midSoleCode').val("${pro_subsidiary.subsidiarynum}");
+			$('#midSoleCode').attr("pk","${pro_subsidiary.pro_subNum}");
 			$('#midSoleComp').val("${pro_subsidiary.compnum}");
 			$('#midSolePrice').val("${pro_subsidiary.sub_price}");
 		</c:if>
 		<c:if test="${pro_subsidiary.subsidiarytype eq '월형'}">
 			$('#counterCode').val("${pro_subsidiary.subsidiarynum}");
+			$('#counterCode').attr("pk","${pro_subsidiary.pro_subNum}");
 			$('#counterComp').val("${pro_subsidiary.compnum}");
 			$('#counterPrice').val("${pro_subsidiary.sub_price}");
 		</c:if>
 		<c:if test="${pro_subsidiary.subsidiarytype eq '선심'}">
 			$('#insoleCode').val("${pro_subsidiary.subsidiarynum}");
+			$('#insoleCode').attr("pk","${pro_subsidiary.pro_subNum}");
 			$('#insoleComp').val("${pro_subsidiary.compnum}");
 			$('#insolePrice').val("${pro_subsidiary.sub_price}");
 		</c:if>
 		<c:if test="${pro_subsidiary.subsidiarytype eq '까래'}">
 			$('#sockLiningCode').val("${pro_subsidiary.subsidiarynum}");
+			$('#sockLiningCode').attr("pk","${pro_subsidiary.pro_subNum}");
 			$('#sockLiningComp').val("${pro_subsidiary.compnum}");
 			$('#sockLiningPrice').val("${pro_subsidiary.sub_price}");
 		</c:if>
 		<c:if test="${pro_subsidiary.subsidiarytype eq '쿠션'}">
 			$('#cushionCode').val("${pro_subsidiary.subsidiarynum}");
+			$('#cushionCode').attr("pk","${pro_subsidiary.pro_subNum}");
 			$('#cushionComp').val("${pro_subsidiary.compnum}");
 			$('#cushionPrice').val("${pro_subsidiary.sub_price}");
 		</c:if>
 		<c:if test="${pro_subsidiary.subsidiarytype eq '갑보'}">
 			$('#heelPadCode').val("${pro_subsidiary.subsidiarynum}");
+			$('#heelPadCode').attr("pk","${pro_subsidiary.pro_subNum}");
 			$('#heelPadComp').val("${pro_subsidiary.compnum}");
 			$('#heelPadPrice').val("${pro_subsidiary.sub_price}");
 		</c:if>
-	</c:forEach>	
+	</c:forEach>
 	
 	<c:forEach var="pro_leather_out" items="${pro_leather_out}" varStatus ="i">	
 		$('#outLeatherCode' + ${i.count}).val("${pro_leather_out.leatherNum}");
@@ -71,6 +81,8 @@ $(document).ready(function(){
 		$('#outLeatherRequirement' + ${i.count}).val("${pro_leather_out.consumption}");
 		$('#outLeatherCost' + ${i.count}).val("${pro_leather_out.le_cost}");
 		$('#outLeatherPrice' + ${i.count}).val("${pro_leather_out.le_price}");
+		$('#outLeatherPk' + ${i.count}).val("${pro_leather_out.pro_leNum}");
+		
 	</c:forEach>	
 	<c:forEach var="pro_leather_in" items="${pro_leather_in}" varStatus ="i">	
 		$('#inLeatherCode' + ${i.count}).val("${pro_leather_in.leatherNum}");
@@ -78,18 +90,20 @@ $(document).ready(function(){
 		$('#inLeatherRequirement' + ${i.count}).val("${pro_leather_in.consumption}");
 		$('#inLeatherCost' + ${i.count}).val("${pro_leather_in.le_cost}");
 		$('#inLeatherPrice' + ${i.count}).val("${pro_leather_in.le_price}");
+		$('#inLeatherPk' + ${i.count}).val("${pro_leather_in.pro_leNum}");
 	</c:forEach>	
 	
 	<c:forEach var="pro_accessory" items="${pro_accessory}" varStatus ="i">
 		$('#decoCode' + ${i.count}).val("${pro_accessory.accessorynum}");
+		$('#decoCode' + ${i.count}).attr("pk","${pro_accessory.pro_accNum}");
 		$('#decoComp' + ${i.count} ).val("${pro_accessory.compnum}");
 		$('#decoRequirement' + ${i.count}).val("${pro_accessory.consumption}");
 		$('#decoCost' + ${i.count}).val("${pro_accessory.ac_cost}");
 		$('#decoPrice' + ${i.count}).val("${pro_accessory.ac_price}");
-	</c:forEach>
-	
+	</c:forEach> 
 	$('.selCustom').select2();
-	$("#confirm").on("click",function(e) {
+
+	$("#update").on("click",function(e) {
 		var productCost = new Object();
 		var productMaterial = new Object();
 		var leatherMaterial = new Object();
@@ -111,6 +125,7 @@ $(document).ready(function(){
 			Leather['le_type'] = $("#outLeatherType" + i).val();
 			Leather['le_cost'] = $("#outLeatherCost" + i).val();
 			Leather['le_price'] = $("#outLeatherPrice" + i).val();
+			Leather['pro_leNum'] = $("#outLeatherPk" + i).val();
 			LeatherArray.push(Leather);
 		}
 		for(var i=1 ; i<= inLeatherCnt; i++){
@@ -122,6 +137,7 @@ $(document).ready(function(){
 			Leather['le_type'] = $("#inLeatherType" + i).val();
 			Leather['le_cost'] = $("#inLeatherCost" + i).val();
 			Leather['le_price'] = $("#inLeatherPrice" + i).val();
+			Leather['pro_leNum'] = $("#inLeatherPk" + i).val();
 			LeatherArray.push(Leather);
 		}
 		leatherMaterial.LeatherArray  = LeatherArray;
@@ -153,54 +169,63 @@ $(document).ready(function(){
 		subsidiarMaterialArray = [
 			{
 				subsidiaryNum : $("#soleCode").val(),
+				pro_subNum : $("#soleCode").attr("pk"),
 				designNum : $("#designNum").val(),
 				sub_price : $("#solePrice").val()
 			   
 			},
 			{
 				subsidiaryNum : $("#soleProCode").val(),
+				pro_subNum : $("#soleProCode").attr("pk"),
 				designNum : $("#designNum").val(),
 				sub_price : $("#soleProPrice").val()
 			   
 			},
 			{
 				subsidiaryNum : $("#heelCode").val(),
+				pro_subNum : $("#heelCode").attr("pk"),
 				designNum : $("#designNum").val(),
 				sub_price : $("#heelPrice").val()
 			   
 			},
 			{
 				subsidiaryNum : $("#midSoleCode").val(),
+				pro_subNum : $("#midSoleCode").attr("pk"),
 				designNum : $("#designNum").val(),
 				sub_price : $("#midSolePrice").val()
 			   
 			},
 			{
 				subsidiaryNum : $("#counterCode").val(),
+				pro_subNum : $("#counterCode").attr("pk"),
 				designNum : $("#designNum").val(),
 				sub_price : $("#counterPrice").val()
 			   
 			},
 			{
 				subsidiaryNum : $("#insoleCode").val(),
+				pro_subNum : $("#insoleCode").attr("pk"),
 				designNum : $("#designNum").val(),
 				sub_price : $("#insolePrice").val()
 			   
 			},
 			{
 				subsidiaryNum : $("#sockLiningCode").val(),
+				pro_subNum : $("#sockLiningCode").attr("pk"),
 				designNum : $("#designNum").val(),
 				sub_price : $("#sockLiningPrice").val()
 			   
 			},
 			{
 				subsidiaryNum : $("#cushionCode").val(),
+				pro_subNum : $("#cushionCode").attr("pk"),
 				designNum : $("#designNum").val(),
 				sub_price : $("#cushionPrice").val()
 			   
 			},
 			{
 				subsidiaryNum : $("#heelPadCode").val(),
+				pro_subNum : $("#heelPadCode").attr("pk"),
 				designNum : $("#designNum").val(),
 				sub_price : $("#heelPadPrice").val()
 			   
@@ -217,6 +242,7 @@ $(document).ready(function(){
 		for(var i=1; i<6; i++){
 			var accessoryTemp = new Object();
 			accessoryTemp['accessorynum'] = $("#decoCode" + i).val();
+			accessoryTemp['pro_accNum'] = $("#decoCode" + i).attr("pk");
 			accessoryTemp['decoComp'] = $("#decoComp" + i).val();
 			accessoryTemp['consumption'] = $("#decoRequirement" + i).val();
 			accessoryTemp['ac_cost'] = $("#decoCost" + i).val();
@@ -234,7 +260,7 @@ $(document).ready(function(){
 		
 		$.ajax({
 				type : "POST",
-				url : "/registProduct.do",
+				url : "/updateProduct.do",
 				data : JSON.stringify(productCost),
 				dataType: "json",
 				contentType:"application/json;charset=UTF-8",
@@ -269,6 +295,32 @@ $(document).ready(function(){
 			});
 		
 	}); 
+	
+	$("#delete").on("click",function(e){
+		 if (confirm("진짜 삭제하시겠습니까?")) {
+			 var data = new Object();
+			 data.designNum = $("#designNum").val();
+			 $.ajax({
+				  type : "POST",
+					url : "/deleteProduct.do",
+					data : JSON.stringify(data),
+					dataType: "json",
+					contentType:"application/json;charset=UTF-8",
+		            cache: false,
+		            timeout: 600000,
+		            success: function (data) {
+		            	location.href="productListMain.do";
+		            },
+		            error: function (e) {
+		                console.log("ERROR : ", e);
+		                alert("fail");
+		            }
+		        });
+			 
+		    } else {
+		        return false;
+		    }
+	});
 	
 	function validation(data) { 
 		if( $("#" + data).val() == "" ) {
@@ -387,7 +439,7 @@ function addLeather(data){
 
 		addNode = "<tr>";
 		addNode += "<td id=	'outLeather" + Number(outLeatherCnt + 1 )  + "'>외피 "+ Number(outLeatherCnt + 1 ) + "</td>";
-		addNode += "<td><select onchange=getPrice(this,'leather','outLeatherCost"+Number(outLeatherCnt + 1 )+"') class='form-control selCustom' style='width: 100%;' id = 'outLeatherCode"+Number(outLeatherCnt + 1 )+"'><option></option>"+outNode+"</select><input type='hidden' value='외피' id='outLeatherType"+ Number(outLeatherCnt + 1 ) +"'/></td>";
+		addNode += "<td><select onchange=getPrice(this,'leather','outLeatherCost"+Number(outLeatherCnt + 1 )+"') class='form-control selCustom' style='width: 100%;' id = 'outLeatherCode"+Number(outLeatherCnt + 1 )+"'><option></option>"+outNode+"</select><input type='hidden' value='외피' id='outLeatherType"+ Number(outLeatherCnt + 1 ) +"'/><input type='hidden' id='outLeatherPk"+ Number(outLeatherCnt + 1 ) +"'/></td>";
 		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'outLeatherComp"+Number(outLeatherCnt + 1 )+"' ><option></option>"+cNode+"</select></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='outLeatherRequirement"+Number(outLeatherCnt + 1 )+"'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='outLeatherCost"+Number(outLeatherCnt + 1 )+"'></td>";
@@ -402,7 +454,7 @@ function addLeather(data){
 
 		addNode = "<tr>";
 		addNode += "<td id=	'inLeather" + Number(inLeatherCnt + 1 )  + "'>내피 "+ Number(inLeatherCnt + 1 ) + "</td>";
-		addNode += "<td><select onchange=getPrice(this,'leather','inLeatherCost"+Number(inLeatherCnt + 1 )+"') class='form-control selCustom' style='width: 100%;' id = 'inLeatherCode"+Number(inLeatherCnt + 1 )+"' ><option></option>"+inNode+"</select><input type='hidden' value='내피' id='inLeatherType"+ Number(inLeatherCnt + 1 ) +"'/></td>";
+		addNode += "<td><select onchange=getPrice(this,'leather','inLeatherCost"+Number(inLeatherCnt + 1 )+"') class='form-control selCustom' style='width: 100%;' id = 'inLeatherCode"+Number(inLeatherCnt + 1 )+"' ><option></option>"+inNode+"</select><input type='hidden' value='내피' id='inLeatherType"+ Number(inLeatherCnt + 1 ) +"'/><input type='hidden' id='inLeatherPk"+ Number(inLeatherCnt + 1 ) +"'/></td>";
 		addNode += "<td><select class='form-control selCustom' style='width: 100%;' id = 'inLeatherComp"+Number(inLeatherCnt + 1 )+"' ><option></option>"+cNode+"</select></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='inLeatherRequirement"+ Number(inLeatherCnt + 1 ) + "'></td>";
 		addNode += "<td><input class='form-control form-control-sm' type='number' onkeyup='autoCal();' id='inLeatherCost"+ Number(inLeatherCnt + 1 ) + "'></td>";
@@ -523,7 +575,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 							    <tr>
 							      <th scope="row">디자인번호</th>
 							      <td>
-							      	<input class="form-control form-control-sm" type="text" placeholder="디자인번호" id="designNum" required="required" value="${product.designNum}">
+							      	<input class="form-control form-control-sm" type="text" placeholder="디자인번호" id="designNum" readonly="readonly" value="${product.designNum}">
 							      </td>
 							    </tr>
 							    <tr>
@@ -582,6 +634,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 												</c:forEach>
 									      	</select>
 											<input type="hidden" value="외피" id="outLeatherType${i.count}"/>
+											<input type="hidden" id="outLeatherPk${i.count}"/>
 									      </td>
 									      <td>
 									      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherComp${i.count}">
@@ -609,6 +662,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 												</c:forEach>
 									      	</select>
 									      	<input type="hidden" value="내피" id="inLeatherType${i.count}"/>
+									      	<input type="hidden" id="inLeatherPk${i.count}"/>
 									      </td>
 									      <td>
 									      	<select class="form-control selCustom" style="width: 100%;" id="inLeatherComp${i.count}">
@@ -634,7 +688,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 							      <!-- <td><input class="form-control form-control-sm" type="text" id="soleCode"></td>
 							      <td><input class="form-control form-control-sm" type="text" id="soleComp"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="soleCode" onchange="getPrice(this, 'subsidiary','solePrice')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="soleCode" onchange="getPrice(this, 'subsidiary','solePrice')">
 							      		<option></option>
 							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
 								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '창'}">
@@ -642,7 +696,6 @@ function stopDefaultAction(e) { e.preventDefault()};
 											</c:if>
 										</c:forEach>
 							      	</select>
-							      	
 							      </td>
 							      <td>
 							      	<select class="form-control selCustom" style="width: 100%;" id="soleComp">
@@ -660,7 +713,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 							      <td>창가공</td>
 							      <td>
 							      	<!-- <input class="form-control form-control-sm" type="text" id="soleProCode"> -->
-							      	<select class="form-control form-control-sm selCustom" style="width: 100%;" id="soleProCode" onchange="getPrice(this, 'subsidiary','soleProPrice')">
+							      	<select class="form-control form-control-sm selCustom" pk="" style="width: 100%;" id="soleProCode" onchange="getPrice(this, 'subsidiary','soleProPrice')">
 							      		<option></option>
 							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
 								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '창가공'}">
@@ -689,7 +742,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 							      <!-- <td><input class="form-control form-control-sm" type="text" id="heelCode"></td>
 							      <td><input class="form-control form-control-sm" type="text" id="heelComp"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="heelCode" onchange="getPrice(this, 'subsidiary','heelPrice')">
+							      	<select class="form-control selCustom" pk="" style="width: 100%;" id="heelCode" onchange="getPrice(this, 'subsidiary','heelPrice')">
 							      		<option></option>
 							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
 								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '굽'}">
@@ -713,10 +766,8 @@ function stopDefaultAction(e) { e.preventDefault()};
 							    </tr>
 							    <tr>
 							      <td>중창</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="midSoleCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="midSoleComp"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="midSoleCode" onchange="getPrice(this, 'subsidiary','midSolePrice')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="midSoleCode" onchange="getPrice(this, 'subsidiary','midSolePrice')">
 							      		<option></option>
 							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
 								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '중창'}">
@@ -740,10 +791,8 @@ function stopDefaultAction(e) { e.preventDefault()};
 							    </tr>
 							    <tr>
 							      <td>월형</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="counterCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="counterComp"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="counterCode" onchange="getPrice(this, 'subsidiary','counterPrice')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="counterCode" onchange="getPrice(this, 'subsidiary','counterPrice')">
 							      		<option></option>
 							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
 								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '월형'}">
@@ -767,10 +816,8 @@ function stopDefaultAction(e) { e.preventDefault()};
 							    </tr>
 							    <tr>
 							      <td>선심</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="insoleCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="insoleComp"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="insoleCode" onchange="getPrice(this, 'subsidiary','insolePrice')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="insoleCode" onchange="getPrice(this, 'subsidiary','insolePrice')">
 							      		<option></option>
 							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
 								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '선심'}">
@@ -794,10 +841,8 @@ function stopDefaultAction(e) { e.preventDefault()};
 							    </tr>
 							    <tr>
 							      <td>까래</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="sockLiningCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="sockLiningComp"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="sockLiningCode" onchange="getPrice(this, 'subsidiary','sockLiningPrice')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="sockLiningCode" onchange="getPrice(this, 'subsidiary','sockLiningPrice')">
 							      		<option></option>
 							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
 								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '까래'}">
@@ -821,10 +866,8 @@ function stopDefaultAction(e) { e.preventDefault()};
 							    </tr>
 							    <tr>
 							      <td>쿠션</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="cushionCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="cushionComp"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="cushionCode" onchange="getPrice(this, 'subsidiary','cushionPrice')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="cushionCode" onchange="getPrice(this, 'subsidiary','cushionPrice')">
 							      		<option></option>
 							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
 								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '쿠션'}">
@@ -848,10 +891,8 @@ function stopDefaultAction(e) { e.preventDefault()};
 							    </tr>
 							     <tr>
 							      <td>갑보</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="heelPadCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="heelPadComp"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="heelPadCode" onchange="getPrice(this, 'subsidiary','heelPadPrice')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="heelPadCode" onchange="getPrice(this, 'subsidiary','heelPadPrice')">
 							      		<option></option>
 							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
 								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '갑보'}">
@@ -875,7 +916,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 							    <tr>
 							      <td>기타소모재</td>
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="otherMaterialCode" onchange="getPrice(this, 'materialOther','otherPrice')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="otherMaterialCode" onchange="getPrice(this, 'materialOther','otherPrice')">
 							      		<option></option>
 										<c:forEach var="allMaterialOtherList" items="${allMaterialOtherList}"> 
 								    		<option value="${allMaterialOtherList.materialothernum}">${allMaterialOtherList.materialothername}</option>
@@ -899,7 +940,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 							      <!-- <td><input class="form-control form-control-sm" type="text" id="decoCode1"></td>
 							      <td><input class="form-control form-control-sm" type="text" id="decoComp1"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode1" onchange="getPrice(this, 'accessory','decoCost1')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="decoCode1" onchange="getPrice(this, 'accessory','decoCost1')">
 							      		<option></option>
 							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
 								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
@@ -923,7 +964,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 							      <!-- <td><input class="form-control form-control-sm" type="text" id="decoCode2"></td>
 							      <td><input class="form-control form-control-sm" type="text" id="decoComp2"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode2" onchange="getPrice(this, 'accessory','decoCost2')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="decoCode2" onchange="getPrice(this, 'accessory','decoCost2')">
 							      		<option></option>
 							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
 								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
@@ -947,7 +988,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 							      <!-- <td><input class="form-control form-control-sm" type="text" id="decoCode3"></td>
 							      <td><input class="form-control form-control-sm" type="text" id="decoComp3"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode3" onchange="getPrice(this, 'accessory','decoCost3')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="decoCode3" onchange="getPrice(this, 'accessory','decoCost3')">
 							      		<option></option>
 							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
 								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
@@ -971,7 +1012,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 							      <!-- <td><input class="form-control form-control-sm" type="text" id="decoCode4"></td>
 							      <td><input class="form-control form-control-sm" type="text" id="decoComp4"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode4" onchange="getPrice(this, 'accessory','decoCost4')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="decoCode4" onchange="getPrice(this, 'accessory','decoCost4')">
 							      		<option></option>
 							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
 								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
@@ -995,7 +1036,7 @@ function stopDefaultAction(e) { e.preventDefault()};
 							      <!-- <td><input class="form-control form-control-sm" type="text" id="decoCode5"></td>
 							      <td><input class="form-control form-control-sm" type="text" id="decoComp5"></td> -->
 							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode5" onchange="getPrice(this, 'accessory','decoCost5')">
+							      	<select class="form-control selCustom" style="width: 100%;" pk="" id="decoCode5" onchange="getPrice(this, 'accessory','decoCost5')">
 							      		<option></option>
 							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
 								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
@@ -1082,504 +1123,10 @@ function stopDefaultAction(e) { e.preventDefault()};
 							   	</tr>
 							  </tbody>
 							</table>
-							
-							
-							
-							
-							<%-- <table class="table table-bordered" style="margin-top: 20px;">
-							  <thead>
-							    <tr>
-							      <th scope="col">구분</th>
-							      <th scope="col" colspan="2">품목</th>
-							      <th scope="col">회사</th>
-							      <th scope="col">소요량</th>
-							      <th scope="col">단가</th>
-							      <th scope="col">금액</th>
-							    </tr>
-							  </thead>
-							 <tbody id="materialList">
-							    <tr>
-							      <th id="leatherMaterial" scope="row" rowspan="4">원자재</th>
-							      <td id="outLeather1">외피 1</td>
-							      <td style="width: 200px;">
-							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherCode1"  onchange="getPrice(this, 'leather','outLeatherCost1')">
-							      		<option></option>
-							      		<c:forEach var="allLeatherList" items="${allLeatherList}">
-							      			<c:if test="${allLeatherList.leathertype eq '외피'}"> 
-								    			<option value="${allLeatherList.leathernum}">${allLeatherList.leathername}</option>
-											</c:if>								    			
-										</c:forEach>
-							      	</select>
-									<input type="hidden" value="외피" id="outLeatherType1"/>
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherComp1">
-							      		<option></option>
-										<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherRequirement1"></td>
-							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherCost1"></td>
-							      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherPrice1" readonly="readonly"></td>
-							    </tr>
-							    
-							    <!--이걸 for 돌려  로우스팬은 갯수  카운트 해서 넣어주자 jstl은 count 값 넣어주면됨 rowspan -->
-							    <c:forEach var="pro_leather" items="${pro_leather}" varStatus="status" >
-								    
-								    <!-- 이프 외피 -->
-								    <c:if test="${pro_leather.le_type eq '외피'}">
-									    <tr>
-									      <c:if test="${status.first }"> <th id="leatherMaterial" scope="row" rowspan="4">원자재</th></c:if>
-	    								  <c:if test="${not status.first }"><td></td></c:if>
-									      <td id="outLeather1">외피 1</td>
-									      <td style="width: 200px;">
-									      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherCode1"  onchange="getPrice(this, 'leather','outLeatherCost1')">
-									      		<option></option>
-									      		<c:forEach var="allLeatherList" items="${allLeatherList}">
-									      			<c:if test="${allLeatherList.leathertype eq '외피'}"> 
-										    			<option value="${allLeatherList.leathernum}">${allLeatherList.leathername}</option>
-													</c:if>								    			
-												</c:forEach>
-									      	</select>
-											<input type="hidden" value="외피" id="outLeatherType1"/>
-									      </td>
-									      <td>
-									      	<select class="form-control selCustom" style="width: 100%;" id="outLeatherComp1">
-									      		<option></option>
-												<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-										    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-												</c:forEach>
-									      	</select>
-									      </td>
-									      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherRequirement1"></td>
-									      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherCost1"></td>
-									      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="outLeatherPrice1" readonly="readonly"></td>
-									    </tr>
-								    </c:if>
-								    <c:if test="${pro_leather.le_type eq '내피'}">
-									    <tr>
-									      <td id="inLeather1">내피</td>
-									      <td>
-									      	<select class="form-control selCustom" style="width: 100%;" id="inLeatherCode1" onchange="getPrice(this, 'leather','inLeatherCost1')">
-									      		<option></option>
-									      		<c:forEach var="allLeatherList" items="${allLeatherList}"> 
-										    		<c:if test="${allLeatherList.leathertype eq '내피'}"> 
-										    			<option value="${allLeatherList.leathernum}">${allLeatherList.leathername}</option>
-													</c:if>	
-												</c:forEach>
-									      	</select>
-									      	<input type="hidden" value="내피" id="inLeatherType1"/>
-									      </td>
-									      <td>
-									      	<select class="form-control selCustom" style="width: 100%;" id="inLeatherComp1">
-									      		<option></option>
-									      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-										    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-												</c:forEach>
-									      	</select>
-									      </td>
-									      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="inLeatherRequirement1"></td>
-									      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="inLeatherCost1"></td>
-									      <td><input class="form-control form-control-sm" onkeyup="autoCal();" type="number" id="inLeatherPrice1" readonly="readonly"></td>
-									    </tr>
-								    </c:if>
-							    </c:forEach>
-							    <!-- 이걸 for돌려 -->
-							    
-							    
-							    <tr>
-							      <td><1></td>
-							      <td scope="row" colspan="5">원자재 계</td>
-							      <td scope="row" ><input class="form-control form-control-sm" type="text" id="leatherMaterialSum" readonly="readonly" value="${product.leatherMaterialSum}"></td>
-							    </tr>
-							    <tr>
-							      <td scope="row" rowspan="15">부자재</td>
-							      <td>창</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="soleCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="soleComp"></td> -->
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="soleCode" onchange="getPrice(this, 'subsidiary','solePrice')">
-    								    <option></option>
-							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
-								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '창'}">
-											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
-											</c:if>
-										</c:forEach>
-							      	</select>
-							      	
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="soleComp">
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td></td>
-							      <td></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="solePrice"></td>
-							    </tr>
-							    <tr>
-							      <td>창가공</td>
-							      <td>
-							      	<!-- <input class="form-control form-control-sm" type="text" id="soleProCode"> -->
-							      	<select class="form-control form-control-sm selCustom" style="width: 100%;" id="soleProCode" onchange="getPrice(this, 'subsidiary','soleProPrice')">
-							      		<option></option>
-							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
-								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '창가공'}">
-											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
-											</c:if>
-										</c:forEach>
-							      	</select>
-							      
-							      </td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="soleProComp"></td> -->
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="soleProComp">
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      	
-							      </td>
-							      <td></td>
-							      <td></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="soleProPrice"></td>
-							    </tr>
-							    <tr>
-							      <td>굽</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="heelCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="heelComp"></td> -->
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="heelCode" onchange="getPrice(this, 'subsidiary','heelPrice')">
-							      		<option></option>
-							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
-								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '굽'}">
-											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
-											</c:if>
-										</c:forEach>
-							      	</select>
-							      	
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="heelComp">
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td></td>
-							      <td></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="heelPrice"></td>
-							    </tr>
-							    <tr>
-							      <td>중창</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="midSoleCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="midSoleComp"></td> -->
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="midSoleCode" onchange="getPrice(this, 'subsidiary','midSolePrice')">
-							      		<option></option>
-							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
-								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '중창'}">
-											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
-											</c:if>
-										</c:forEach>
-							      	</select>
-							      	
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="midSoleComp" >
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td></td>
-							      <td></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="midSolePrice"></td>
-							    </tr>
-							    <tr>
-							      <td>월형</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="counterCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="counterComp"></td> -->
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="counterCode" onchange="getPrice(this, 'subsidiary','counterPrice')">
-							      		<option></option>
-							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
-								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '월형'}">
-											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
-											</c:if>
-										</c:forEach>
-							      	</select>
-							      	
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="counterComp">
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td></td>
-							      <td></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="counterPrice"></td>
-							    </tr>
-							    <tr>
-							      <td>선심</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="insoleCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="insoleComp"></td> -->
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="insoleCode" onchange="getPrice(this, 'subsidiary','insolePrice')">
-							      		<option></option>
-							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
-								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '선심'}">
-											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
-											</c:if>
-										</c:forEach>
-							      	</select>
-							      	
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="insoleComp">
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td></td>
-							      <td></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="insolePrice"></td>
-							    </tr>
-							    <tr>
-							      <td>까래</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="sockLiningCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="sockLiningComp"></td> -->
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="sockLiningCode" onchange="getPrice(this, 'subsidiary','sockLiningPrice')">
-							      		<option></option>
-							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
-								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '까래'}">
-											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
-											</c:if>
-										</c:forEach>
-							      	</select>
-							      	
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="sockLiningComp" >
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td></td>
-							      <td></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="sockLiningPrice"></td>
-							    </tr>
-							    <tr>
-							      <td>쿠션</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="cushionCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="cushionComp"></td> -->
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="cushionCode" onchange="getPrice(this, 'subsidiary','cushionPrice')">
-							      		<option></option>
-							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
-								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '쿠션'}">
-											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
-											</c:if>
-										</c:forEach>
-							      	</select>
-							      	
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="cushionComp">
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td></td>
-							      <td></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="cushionPrice"></td>
-							    </tr>
-							     <tr>
-							      <td>갑보</td>
-							      <!-- <td><input class="form-control form-control-sm" type="text" id="heelPadCode"></td>
-							      <td><input class="form-control form-control-sm" type="text" id="heelPadComp"></td> -->
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="heelPadCode" onchange="getPrice(this, 'subsidiary','heelPadPrice')">
-							      		<option></option>
-							      		<c:forEach var="allSubsidiaryList" items="${allSubsidiaryList}"> 
-								    		<c:if test="${allSubsidiaryList.subsidiarytype eq '갑보'}">
-											    <option value="${allSubsidiaryList.subsidiarynum}">${allSubsidiaryList.subsidiaryname}</option>
-											</c:if>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="heelPadComp">
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td></td>
-							      <td></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="heelPadPrice"></td>
-							    </tr>
-							    <tr>
-							      <td>기타소모재</td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="otherMaterialCode" onchange="getPrice(this, 'materialOther','otherPrice')">
-							      		<option></option>
-										<c:forEach var="allMaterialOtherList" items="${allMaterialOtherList}"> 
-								    		<option value="${allMaterialOtherList.materialothernum}">${allMaterialOtherList.materialothername}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="otherMaterialComp">
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td></td>
-							      <td></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="otherPrice"></td>
-							    </tr>
-							    
-							    <c:forEach var="pro_accessory" items="${pro_accessory}" varStatus="status" > 
-								    <tr>
-								       
-								      <c:if test="${status.first }"><td>장식</td></c:if>
-    								  <c:if test="${not status.first }"><td></td></c:if> 
-								      <td>
-								      	<select class="form-control selCustom" style="width: 100%;" id="decoCode1" onchange="getPrice(this, 'accessory','decoCost1')">
-								      		<option></option>
-								      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
-									    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
-											</c:forEach>
-								      	</select>
-								      </td>
-								      <td>
-								      	<select class="form-control selCustom" style="width: 100%;" id="decoComp1">
-								      		<option></option>
-								      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-									    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-											</c:forEach>
-								      	</select>
-								      </td>
-								      <td><input class="form-control form-control-sm" type="number" id="decoRequirement1" onkeyup="autoCal();"></td>
-								      <td><input class="form-control form-control-sm" type="number" id="decoCost1" onkeyup="autoCal();"></td>
-								      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice1" readonly="readonly"></td>
-								    </tr>
-							    </c:forEach>
-							    <tr>
-							      <td></td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode2" onchange="getPrice(this, 'accessory','decoCost2')">
-							      		<option></option>
-							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
-								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" >
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoRequirement2"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoCost2"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice2" readonly="readonly"></td>
-							    </tr>
-							    <tr>
-							      <td></td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode3" onchange="getPrice(this, 'accessory','decoCost3')">
-							      		<option></option>
-							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
-								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoComp3">
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoRequirement3"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoCost3"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice3" readonly="readonly"></td>
-							    </tr>
-							    <tr>
-							      <td></td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode4" onchange="getPrice(this, 'accessory','decoCost4')">
-							      		<option></option>
-							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
-								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoComp4">
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoRequirement4"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoCost4"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice4" readonly="readonly"></td>
-							    </tr>
-							    <tr>
-							      <td></td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoCode5" onchange="getPrice(this, 'accessory','decoCost5')">
-							      		<option></option>
-							      		<c:forEach var="allAccessoryList" items="${allAccessoryList}"> 
-								    		<option value="${allAccessoryList.accessorynum}">${allAccessoryList.accessoryname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td>
-							      	<select class="form-control selCustom" style="width: 100%;" id="decoComp5">
-							      		<option></option>
-							      		<c:forEach var="allCompanyList" items="${allCompanyList}"> 
-								    		<option value="${allCompanyList.compnum}">${allCompanyList.compname}</option>
-										</c:forEach>
-							      	</select>
-							      </td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoRequirement5"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoCost5"></td>
-							      <td><input class="form-control form-control-sm" type="number" onkeyup="autoCal();" id="decoPrice5" readonly="readonly"></td>
-							    </tr>
-							    --%>
-							
-							
-							
-							<button style="margin: 0px auto" type="submit" id="confirm" class="btn btn-secondary my-2 my-sm-0">등록하기</button>
+							<div style="margin: 0px auto; margin-top: 30px;">
+								<button  type="submit" id="update" class="btn btn-secondary my-2 my-sm-0">수정하기</button>
+								<button  type="submit" id="delete" class="btn btn-secondary my-2 my-sm-0">삭제하기</button>
+							</div>
 						</div>
 					</div>
 				</div>

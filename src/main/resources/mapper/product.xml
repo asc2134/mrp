@@ -4,23 +4,23 @@
 
 <mapper namespace="product">
 	<insert id="registProductMaterial">
-		INSERT INTO mrp.product("designNum", gender, "percentMargin", "allSum", "upperEP", "shoesEP", "indirectEmploymentExpense", "factoryExpense", "administrativeExpense", supplier, "leatherMaterialSum", "subsidiarySum", "expenseSum", "costSum") VALUES (#{designNum} ::integer, #{gender}, #{percentMargin} ::integer, #{allSum} ::integer, #{upperEP} ::integer, #{shoesEP} ::integer, #{indirectEmploymentExpense} ::integer, #{factoryExpense} ::integer, #{administrativeExpense} ::integer, #{supplier}, #{leatherMaterialSum} ::integer, #{subsidiarySum} ::integer, #{expenseSum} ::integer, #{costSum} ::integer)
+		INSERT INTO mrp.product("designNum", gender, "percentMargin", "allSum", "upperEP", "shoesEP", "indirectEmploymentExpense", "factoryExpense", "administrativeExpense", supplier, "leatherMaterialSum", "subsidiarySum", "expenseSum", "costSum") VALUES (#{designNum} ::integer, #{gender}, #{percentMargin} ::real, #{allSum} ::real, #{upperEP} ::real, #{shoesEP} ::real, #{indirectEmploymentExpense} ::real, #{factoryExpense} ::real, #{administrativeExpense} ::real, #{supplier}, #{leatherMaterialSum} ::real, #{subsidiarySum} ::real, #{expenseSum} ::real, #{costSum} ::real)
 	</insert>
 	
 	<insert id="registLeatherMaterial">
-		INSERT INTO mrp.pro_leather("pro_leNum", "leatherNum", "designNum", le_price, consumption, le_cost, le_type) VALUES (nextval('seq_pro_leather'), #{leatherNum} ::integer, #{designNum} ::integer, #{le_price} ::integer, #{consumption}, #{le_cost} ::integer, #{le_type})
+		INSERT INTO mrp.pro_leather("pro_leNum", "leatherNum", "designNum", le_price, consumption, le_cost, le_type) VALUES (nextval('seq_pro_leather'), #{leatherNum} ::integer, #{designNum} ::integer, #{le_price} ::real, #{consumption}, #{le_cost} ::real, #{le_type})
 	</insert>
 	
 	<insert id="registOtherMaterial">
-		INSERT INTO mrp.pro_materialother( materialothernum, "designNum", "pro_otNum", ot_price) VALUES ( #{materialOtherNum} ::integer, #{designNum} ::integer, nextval('seq_pro_materialOther'), #{ot_price} ::integer)
+		INSERT INTO mrp.pro_materialother( materialothernum, "designNum", "pro_otNum", ot_price) VALUES ( #{materialOtherNum} ::integer, #{designNum} ::integer, nextval('seq_pro_materialOther'), #{ot_price} ::real)
 	</insert>
 	
 	<insert id="registAccessoryMaterial">
-		INSERT INTO mrp.pro_accessory("pro_accNum", accessorynum, "designNum", ac_price, consumption, ac_cost) VALUES (nextval('seq_pro_accessory'), #{accessorynum} ::integer, #{designNum} ::integer, #{ac_price} ::integer, #{consumption}, #{ac_cost} ::integer)
+		INSERT INTO mrp.pro_accessory("pro_accNum", accessorynum, "designNum", ac_price, consumption, ac_cost) VALUES (nextval('seq_pro_accessory'), #{accessorynum} ::integer, #{designNum} ::integer, #{ac_price} ::real, #{consumption}, #{ac_cost} ::real)
 	</insert>	
 	
 	<insert id="registSubsidiarMaterial">
-		INSERT INTO mrp.pro_subsidiary( "pro_subNum", "designNum", sub_price, "subsidiaryNum") VALUES (nextval('seq_pro_subsidiary'), #{designNum} ::integer, #{sub_price} ::integer, #{subsidiaryNum} ::integer);
+		INSERT INTO mrp.pro_subsidiary( "pro_subNum", "designNum", sub_price, "subsidiaryNum") VALUES (nextval('seq_pro_subsidiary'), #{designNum} ::integer, #{sub_price} ::real, #{subsidiaryNum} ::integer)
 	</insert>
 	<select id="getProductList" resultType="Map">
 		select * from mrp.product
@@ -45,7 +45,18 @@
 	</select>
 	
 	<select id="getpMaterialOther" resultType="Map" parameterType="String">
-		select * from mrp.pro_materialother where "designNum" = #{designNum} ::integer
+		select 
+			pro.materialothernum - COALESCE(pro.materialothernum, 0) as materialothernum,
+			pro.ot_price - COALESCE(ot_price, 0) as ot_price,
+			pro."designNum" - COALESCE("designNum", 0) as designNum,
+			pro."pro_otNum" - COALESCE("pro_otNum", 0) as pro_otNum,
+			mat.compnum - COALESCE(compnum, 0) as compnum,
+			mat.amount - COALESCE(amount, 0) as amount,
+			mat.price - COALESCE(price, 0) as price
+		from mrp.pro_materialother as pro, 
+			 mrp.materialother as mat  
+				where pro.materialothernum= mat.materialothernum
+			 		and "designNum" = #{designNum} ::integer
 	</select>
 	
 	<select id="getpSubsidiary" resultType="Map" parameterType="String">
@@ -55,7 +66,7 @@
 	</select>
 	
 	<select id="getLeatherPrice" resultType="String" parameterType="Map">
-		select price from mrp.leather where leathernum = #{num} ::integer;		
+		select price from mrp.leather where leathernum = #{num} ::integer		
 	</select>
 	
 	<select id="getSubsidiaryPrice" resultType="String" parameterType="Map">
@@ -63,11 +74,140 @@
 	</select>
 	
 	<select id="getAccessoryPrice" resultType="String" parameterType="Map">
-		select price from mrp.accessory where accessorynum =  #{num} ::integer;
+		select price from mrp.accessory where accessorynum =  #{num} ::integer
 	</select>
 
 	<select id="getMaterialOtherPrice" resultType="String" parameterType="Map">
-		select price from mrp.materialother where materialothernum = #{num} ::integer;	
+		select price from mrp.materialother where materialothernum = #{num} ::integer	
 	</select>
 	
+	<update id="updateProductMaterial">
+		update mrp.product set 
+			gender = #{gender}, 
+			"percentMargin" = #{percentMargin} ::real, 
+			"allSum" = #{allSum} ::real, 
+			"upperEP" = #{upperEP} ::real, 
+			"shoesEP" = #{shoesEP} ::real, 
+			"indirectEmploymentExpense" = #{indirectEmploymentExpense} ::real, 
+			"factoryExpense" = #{factoryExpense} ::real, 
+			"administrativeExpense" = #{administrativeExpense} ::real, 
+			supplier = #{supplier}, 
+			"leatherMaterialSum" = #{leatherMaterialSum} ::real, 
+			"subsidiarySum" = #{subsidiarySum} ::real,
+			"expenseSum" = #{expenseSum} ::real, 
+			"costSum" = #{costSum} ::real
+		where 
+			"designNum" = #{designNum} ::integer 
+	</update>
+	
+	<update id="updateLeatherMaterial">
+		INSERT INTO mrp.pro_leather("pro_leNum", "leatherNum", "designNum", le_price, consumption, le_cost, le_type) 
+			VALUES ( 
+			
+			<if test="pro_leNum = null or pro_leNum.equals('')">
+				nextval('seq_pro_leather')
+			</if>
+			<if test="pro_leNum != null">
+				#{pro_leNum} ::integer
+			</if>
+			, #{leatherNum} ::integer
+			, #{designNum} ::integer
+			, #{le_price} ::real
+			, #{consumption}
+			, #{le_cost} ::real
+			, #{le_type})
+			
+		ON CONFLICT ("pro_leNum")
+		DO UPDATE SET 
+			"leatherNum" = #{leatherNum} ::integer , 
+			le_price = #{le_price} ::real, 
+			consumption = #{consumption}, 
+			le_cost =  #{le_cost} ::real, 
+			le_type  = #{le_type}
+		where 	
+			EXCLUDED."designNum" = #{designNum} ::integer 
+			and EXCLUDED."pro_leNum" = #{pro_leNum} ::integer
+	</update>
+	
+	<update id="updateAccessoryMaterial">
+		INSERT INTO mrp.pro_accessory("pro_accNum", accessorynum, "designNum", ac_price, consumption, ac_cost) 
+		VALUES (
+		<choose>
+			<when test="pro_accNum = null or pro_accNum.equals('')">
+				nextval('seq_pro_accessory')
+			</when>
+			<otherwise>
+				#{pro_accNum} ::integer
+			</otherwise>
+		</choose>
+		
+		, #{accessorynum} ::integer
+		, #{designNum} ::integer
+		, #{ac_price} ::real
+		, #{consumption}, #{ac_cost} ::real)
+		
+		ON CONFLICT ("pro_accNum")
+		DO UPDATE SET 
+			accessorynum = #{accessorynum} ::integer,
+			ac_price = #{ac_price} ::real , 
+			consumption = #{consumption} , 
+			ac_cost  = #{ac_cost} ::real 
+		where 	
+			"designNum" = #{designNum} ::integer and "pro_accNum" = #{pro_accNum} ::integer
+	</update>
+	
+	<update id="updateSubsidiarMaterial">
+		
+		INSERT INTO mrp.pro_subsidiary( "pro_subNum", "designNum", sub_price, "subsidiaryNum") 
+		VALUES (
+		<if test="pro_subNum = null or pro_subNum.equals('')">
+			nextval('seq_pro_subsidiary')
+		</if>
+		<if test="pro_subNum != null">
+			#{pro_subNum} ::integer
+		</if>
+		, #{designNum} ::integer
+		, #{sub_price} ::real
+		, #{subsidiaryNum} ::integer)
+		ON CONFLICT ("pro_subNum")
+		DO UPDATE SET 
+			sub_price =  #{sub_price} ::real, 
+			"subsidiaryNum" = #{subsidiaryNum} ::integer
+		where 	
+			"designNum" = #{designNum} ::integer 
+			and "pro_subNum" = #{pro_subNum} ::integer
+	</update>
+	
+	<update id="updateOtherMaterial">
+		update mrp.pro_materialother set 
+			materialothernum = #{materialOtherNum} ::integer , 
+			ot_price = #{ot_price} ::real
+		where 	
+			"designNum" = #{designNum} ::integer
+	</update>
+	
+	<delete id="deleteLeatherMaterial">
+		DELETE FROM mrp.pro_leather
+			WHERE "designNum" = #{designNum} ::integer 	
+	</delete>
+	
+	<delete id="deleteAccessoryMaterial">
+		DELETE FROM mrp.pro_accessory
+			WHERE "designNum" = #{designNum} ::integer
+	</delete>
+	
+	<delete id="deleteSubsidiarMaterial">
+		DELETE FROM mrp.pro_subsidiary
+			WHERE "designNum" = #{designNum} ::integer
+	</delete>
+	
+	<delete id="deleteOtherMaterial">
+		DELETE FROM mrp.pro_materialother
+			WHERE "designNum" = #{designNum} ::integer
+	</delete>
+	
+	<delete id="deleteProductMaterial">
+		DELETE FROM mrp.product
+			WHERE "designNum" = #{designNum} ::integer
+	</delete>
 </mapper>

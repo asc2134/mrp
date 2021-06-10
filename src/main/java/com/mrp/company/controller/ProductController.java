@@ -61,6 +61,8 @@ public class ProductController {
 		req.setAttribute("allSubsidiaryList", allSubsidiaryList);
 		req.setAttribute("allAccessoryList", allAccessoryList);
 		req.setAttribute("allMaterialOtherList", allMaterialOtherList);
+		
+		
 		return "product/createProduct";
 	}
 	
@@ -193,5 +195,65 @@ public class ProductController {
 		temp.put("result", map.get("result"));
 		return temp;
 	}
+	@RequestMapping("/updateProduct.do")
+	public @ResponseBody Boolean updateProduct(@RequestBody HashMap<String, Object> map, HttpServletRequest req) throws Exception {
+		Boolean result = true ;
+		int resultInt;
+		
+		HashMap<String, String> productMaterial= (HashMap<String, String>) map.get("productMaterial");
+		HashMap<String,  ArrayList<HashMap<String,String>>> leatherMaterial= (HashMap<String,  ArrayList<HashMap<String,String>>>) map.get("leatherMaterial");
+		HashMap<String, ArrayList<HashMap<String,String>>> subsidiarMaterial= (HashMap<String, ArrayList<HashMap<String,String>>>) map.get("subsidiarMaterial");
+		HashMap<String, ArrayList<HashMap<String,String>>> accessoryMaterial= (HashMap<String,  ArrayList<HashMap<String,String>>>) map.get("accessoryMaterial");
+		HashMap<String, String> otherMaterial= (HashMap<String, String>) map.get("otherMaterial");
+		ArrayList<HashMap<String, String>> leatherList = leatherMaterial.get("LeatherArray");
+		ArrayList<HashMap<String, String>> accessoryList=accessoryMaterial.get("accessoryArray");
+		ArrayList<HashMap<String, String>> subsidiarList = subsidiarMaterial.get("subsidiarMaterialArray");
+		
+		
+		resultInt = productDao.updateProductMaterial(productMaterial);
+		
+		for(int i=0; i<leatherList.size(); i++) {  
+			if(!leatherList.get(i).get("leatherNum").isEmpty()) {
+				resultInt = productDao.updateLeatherMaterial(leatherList.get(i));
+				result =resultInt > 0  ? true: false;
+			}
+		}
+		for(int i=0; i<accessoryList.size(); i++) {
+			if(!accessoryList.get(i).get("accessorynum").isEmpty()) {
+				resultInt=productDao.updateAccessoryMaterial(accessoryList.get(i));
+				result =resultInt > 0  ? true: false;
+			}
+		}
+		for(int i=0; i<subsidiarList.size(); i++) {
+			if(!subsidiarList.get(i).get("subsidiaryNum").isEmpty()) {
+				resultInt=productDao.updateSubsidiarMaterial(subsidiarList.get(i));
+				result =resultInt > 0  ? true: false;
+			}
+		}
+		if(!otherMaterial.get("materialOtherNum").isEmpty()) {
+			resultInt = productDao.updateOtherMaterial(otherMaterial);
+			result =resultInt > 0  ? true: false;
+		}
+		
+		return result;
+	}
 	
+	@RequestMapping("/deleteProduct.do")
+	public @ResponseBody Boolean deleteProduct(@RequestBody HashMap<String, Object> map, HttpServletRequest req) throws Exception {
+		Boolean result = true;
+		int resultInt;
+		FileController file = new FileController();
+		String designNum = (String)map.get("designNum");
+		
+
+		productDao.deleteLeatherMaterial(designNum);
+		productDao.deleteAccessoryMaterial(designNum);
+		productDao.deleteSubsidiarMaterial(designNum);
+		productDao.deleteOtherMaterial(designNum);
+		fileDao.deleterFile(designNum);
+		productDao.deleteProductMaterial(designNum);
+		file.fileDelete(designNum);
+		
+		return result;
+	}
 }

@@ -9,5 +9,8 @@
 	<select id="getImgFile" resultType="com.mrp.company.dto.FileDto" parameterType="String">
 		select * from mrp.file where "designNum" = #{designNum} ::integer
 	</select>
+	<delete id="deleteFile">
+		delete from mrp.file where "designNum" = #{designNum} ::integer
+	</delete>
 	
 </mapper>

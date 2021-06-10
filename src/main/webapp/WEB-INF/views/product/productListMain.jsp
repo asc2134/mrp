@@ -54,7 +54,7 @@ function showProduct(designNum){
 							  </thead>
 							  <tbody>
 							  	<c:if test="${empty productList}">
-									<tr class="trCompany"  style="display: none;">
+									<tr class="trCompany"  style="">
 										<td class="notData" colspan="4">데이터가 없습니다.</td>
 									</tr>
 								</c:if>
@@ -70,32 +70,7 @@ function showProduct(designNum){
 								</c:if>
 							  </tbody>
 							</table>
-							<!-- <div style="margin: 0px auto;">
-							  <ul class="pagination pagination-sm menu">
-							    <li class="page-item disabled">
-							      <a class="page-link" href="#">&laquo;</a>
-							    </li>
-							    <li class="page-item active">
-							      <a class="page-link" href="#">1</a>
-							    </li>
-							    <li class="page-item">
-							      <a class="page-link" href="#">2</a>
-							    </li>
-							    <li class="page-item">
-							      <a class="page-link" href="#">3</a>
-							    </li>
-							    <li class="page-item">
-							      <a class="page-link" href="#">4</a>
-							    </li>
-							    <li class="page-item">
-							      <a class="page-link" href="#">5</a>
-							    </li>
-							    <li class="page-item">
-							      <a class="page-link" href="#">&raquo;</a>
-							    </li>
-							  </ul>
-							</div> -->
-														<!-- 기타자제 페이징  -->
+															<!-- 기타자제 페이징  -->
 							<div id="productPaging" class="trProductOther" style="margin: 0px auto;">
 							  <ul class="pagination pagination-sm menu">
 							  	<c:if test="${productDto.startPage != 1 }">

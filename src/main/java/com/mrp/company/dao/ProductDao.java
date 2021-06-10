@@ -95,6 +95,55 @@ public class ProductDao {
 		return sql.selectOne("product.getMaterialOtherPrice", map);
 	}
 
+	public int updateProductMaterial(HashMap<String, String> productMaterial) {
+		// TODO Auto-generated method stubproductMaterial
+		return sql.update("product.updateProductMaterial", productMaterial);
+	}
+	
+	public int updateLeatherMaterial(HashMap<String, String> map) {
+		// TODO Auto-generated method stub
+		return sql.update("product.updateLeatherMaterial", map);
+	}
 
+	public int updateAccessoryMaterial(HashMap<String, String> map) {
+		// TODO Auto-generated method stub
+		return sql.update("product.updateAccessoryMaterial", map);
+	}
+
+	public int updateSubsidiarMaterial(HashMap<String, String> map) {
+		// TODO Auto-generated method stub
+		return sql.update("product.updateSubsidiarMaterial", map);
+	}
+
+	public int updateOtherMaterial(HashMap<String, String> otherMaterial) {
+		// TODO Auto-generated method stub
+		return sql.update("product.updateOtherMaterial", otherMaterial);
+	}
+
+	public int deleteLeatherMaterial(String designNum) {
+		// TODO Auto-generated method stub
+		return sql.delete("product.deleteLeatherMaterial",designNum);
+	}
+
+	public int deleteAccessoryMaterial(String designNum) {
+		// TODO Auto-generated method stub
+		return sql.delete("product.deleteAccessoryMaterial",designNum);
+	}
+
+	public int deleteSubsidiarMaterial(String designNum) {
+		// TODO Auto-generated method stub
+		return sql.delete("product.deleteSubsidiarMaterial",designNum);
+	}
+
+	public int deleteOtherMaterial(String designNum) {
+		// TODO Auto-generated method stub
+		return sql.delete("product.deleteOtherMaterial",designNum);
+	}
+
+	public int deleteProductMaterial(String designNum) {
+		// TODO Auto-generated method stub
+		return sql.delete("product.deleteProductMaterial",designNum);
+	}
+	
 
 }

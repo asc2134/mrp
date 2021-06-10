@@ -12,6 +12,11 @@ public class FileDto {
 	
 	
 	
+	@Override
+	public String toString() {
+		return "FileDto [fileNum=" + fileNum + ", fileName=" + fileName + ", fileOriName=" + fileOriName + ", fileUrl="
+				+ fileUrl + ", designNum=" + designNum + ", file=" + file + "]";
+	}
 	public String getFileUrl() {
 		return fileUrl;
 	}
